@@ -1,5 +1,4 @@
-module.exports = [
-    {
+module.exports = [{
         name: '',
         description: '',
         sellPrice: 0,

@@ -1,4 +1,9 @@
-const { CommandInteraction, Client, MessageEmbed, Message } = require("discord.js");
+const {
+    CommandInteraction,
+    Client,
+    MessageEmbed,
+    Message
+} = require("discord.js");
 
 module.exports = {
     name: "listguilds",
@@ -7,8 +12,7 @@ module.exports = {
     slash: true,
     testOnly: true,
     ownerOnly: true,
-    options: [
-        {
+    options: [{
             name: 'list50',
             description: 'List 50 of the servers im in',
             type: 'SUB_COMMAND'
@@ -17,14 +21,12 @@ module.exports = {
             name: 'view',
             description: 'View a server',
             type: 'SUB_COMMAND',
-            options: [
-                {
-                    name: 'guildid',
-                    description: 'The guild to view',
-                    type: 'STRING',
-                    required: true
-                },
-            ]
+            options: [{
+                name: 'guildid',
+                description: 'The guild to view',
+                type: 'STRING',
+                required: true
+            }, ]
         }
     ],
 
@@ -32,22 +34,33 @@ module.exports = {
      * @param {CommandInteraction} interaction
      * @param {Client} client
      */
-    callback: async({interaction, client}) => {
+    callback: async ({
+        interaction,
+        client
+    }) => {
         if (interaction.options.getSubcommand() === 'list50') {
             const guild = client.guilds.cache.sort((a, b) => b.memberCount - a.memberCount).first(50);
             const description = guild.map((guild, index) => `#**${index + 1}** ${guild.name} | \`${guild.id}\` | ${guild.memberCount} Members`).join('\n');
             let embed = new MessageEmbed()
                 .setDescription(`\`\`\`${description}\`\`\``)
                 .setColor('0xa744f2')
-            interaction.reply({ embeds: [embed]});
+            interaction.reply({
+                embeds: [embed]
+            });
         } else if (interaction.options.getSubcommand() === 'view') {
             const guild = client.guilds.cache.find(g => g.id === interaction.options.getString('guildid'))
-            if (!guild) return interaction.reply({embeds: [new MessageEmbed().setTitle('Im not in this guild')]})
-            let invite = await guild.channels.cache.filter(channel => channel.type === "GUILD_TEXT").first().createInvite({maxAge: 60})
+            if (!guild) return interaction.reply({
+                embeds: [new MessageEmbed().setTitle('Im not in this guild')]
+            })
+            let invite = await guild.channels.cache.filter(channel => channel.type === "GUILD_TEXT").first().createInvite({
+                maxAge: 60
+            })
             let embed = new MessageEmbed()
-            .setTitle(`${guild.name} (${guild.id})`)
-            .setDescription(`${invite}`)
-            interaction.reply({embeds: [embed]})
+                .setTitle(`${guild.name} (${guild.id})`)
+                .setDescription(`${invite}`)
+            interaction.reply({
+                embeds: [embed]
+            })
         }
     }
 }

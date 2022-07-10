@@ -1,5 +1,4 @@
-module.exports = [
-    {
+module.exports = [{
         name: 'Cheese',
         description: 'It\'s just a block of cheese',
         sellPrice: 500,

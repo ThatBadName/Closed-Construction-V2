@@ -1,4 +1,8 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js')
+const {
+    MessageEmbed,
+    MessageActionRow,
+    MessageButton
+} = require('discord.js')
 const profileSchema = require('../models/userProfile')
 const blockSchema = require('../models/blockedUsers')
 
@@ -8,13 +12,11 @@ module.exports = {
     category: 'Economy',
     slash: true,
     guildOnly: true,
-    options: [
-        {
+    options: [{
             name: 'transfer',
             description: 'Give some of your money to another user',
             type: 'SUB_COMMAND',
-            options: [
-                {
+            options: [{
                     name: 'user',
                     description: 'The user to transfer money to',
                     type: 'USER',
@@ -38,27 +40,23 @@ module.exports = {
             name: 'deposit',
             description: 'Deposit coins into your bank',
             type: 'SUB_COMMAND',
-            options: [
-                {
-                    name: 'amount',
-                    description: 'The amount to move (put 0 to move max)',
-                    type: 'INTEGER',
-                    required: true,
-                },
-            ]
+            options: [{
+                name: 'amount',
+                description: 'The amount to move (put 0 to move max)',
+                type: 'INTEGER',
+                required: true,
+            }, ]
         },
         {
             name: 'withdraw',
             description: 'Withdraw coins from your bank',
             type: 'SUB_COMMAND',
-            options: [
-                {
-                    name: 'amount',
-                    description: 'The amount to move (put 0 to move all)',
-                    type: 'INTEGER',
-                    required: true,
-                },
-            ]
+            options: [{
+                name: 'amount',
+                description: 'The amount to move (put 0 to move all)',
+                type: 'INTEGER',
+                required: true,
+            }, ]
         },
         {
             name: 'view',
@@ -67,7 +65,9 @@ module.exports = {
         }
     ],
 
-    callback: async ({interaction}) => {
+    callback: async ({
+        interaction
+    }) => {
         const functions = require('../checks/functions')
         const blks = await functions.blacklistCheck(interaction.user.id, interaction.guild.id, interaction)
         if (blks === true) return
@@ -80,8 +80,14 @@ module.exports = {
             const recipient = interaction.options.getUser('user')
             const sender = interaction.user
 
-            const checkBlock1 = await blockSchema.findOne({blockedById: recipient.id, blockedUserId: sender.id})
-            const checkBlock2 = await blockSchema.findOne({blockedById: sender.id, blockedUserId: recipient.id})
+            const checkBlock1 = await blockSchema.findOne({
+                blockedById: recipient.id,
+                blockedUserId: sender.id
+            })
+            const checkBlock2 = await blockSchema.findOne({
+                blockedById: sender.id,
+                blockedUserId: recipient.id
+            })
             if (checkBlock1) return interaction.reply({
                 embeds: [
                     new MessageEmbed()
@@ -119,8 +125,10 @@ module.exports = {
                 ephemeral: true
             })
             if (!senderProfile) {
-                await profileSchema.create({userId: sender.id})
-                
+                await profileSchema.create({
+                    userId: sender.id
+                })
+
                 return interaction.reply({
                     embeds: [
                         new MessageEmbed()
@@ -195,12 +203,14 @@ module.exports = {
 
                     let failedSender = false
                     if (senderProfile.dmNotifs === true) {
-                        await sender.send({embeds: [
-                            new MessageEmbed()
-                            .setTitle('You just gifted some coins')
-                            .setColor('0xa744f2')
-                            .setDescription(`You just sent ${recipient} \`${amount.toLocaleString()}\` coins\nMessage: ${message}`)
-                        ]}).catch(e => {
+                        await sender.send({
+                            embeds: [
+                                new MessageEmbed()
+                                .setTitle('You just gifted some coins')
+                                .setColor('0xa744f2')
+                                .setDescription(`You just sent ${recipient} \`${amount.toLocaleString()}\` coins\nMessage: ${message}`)
+                            ]
+                        }).catch(e => {
                             failedSender = true
                         })
                     }
@@ -215,12 +225,14 @@ module.exports = {
                     })
                     let failedRecipient = false
                     if (recipientProfile.dmNotifs === true) {
-                        await recipient.send({embeds: [
-                            new MessageEmbed()
-                            .setTitle('You just got given some coins')
-                            .setColor('0xa744f2')
-                            .setDescription(`${sender} just sent you \`${amount.toLocaleString()}\` coins\nTheir message: ${message}`)
-                        ]}).catch(e => {
+                        await recipient.send({
+                            embeds: [
+                                new MessageEmbed()
+                                .setTitle('You just got given some coins')
+                                .setColor('0xa744f2')
+                                .setDescription(`${sender} just sent you \`${amount.toLocaleString()}\` coins\nTheir message: ${message}`)
+                            ]
+                        }).catch(e => {
                             failedRecipient = true
                         })
                     }
@@ -257,7 +269,9 @@ module.exports = {
 
         } else if (interaction.options.getSubcommand() === 'deposit') {
             functions.createRecentCommand(interaction.user.id, `balance-deposit`, `AMOUNT: ${interaction.options.getInteger('amount')}`, interaction)
-            const userProfile = await profileSchema.findOne({userId: interaction.user.id})
+            const userProfile = await profileSchema.findOne({
+                userId: interaction.user.id
+            })
             const amountToMove = interaction.options.getInteger('amount')
             if (!userProfile) {
                 interaction.reply({
@@ -269,7 +283,9 @@ module.exports = {
                     ephemeral: true
                 })
 
-                profileSchema.create({userId: interaction.user.id})
+                profileSchema.create({
+                    userId: interaction.user.id
+                })
             }
             if (amountToMove > userProfile.wallet) return interaction.reply({
                 embeds: [
@@ -325,10 +341,13 @@ module.exports = {
                     .addField('Bank', `\`${userProfile.bank.toLocaleString()}/${userProfile.maxBank.toLocaleString()}\` (${Math.round(userProfile.bank / userProfile.maxBank * 100)}% full)`, true)
                     .addField('Amount Moved', `\`${amountMove.toLocaleString()}\``)
                     .setColor('0xa744f2')
-            ]})
+                ]
+            })
         } else if (interaction.options.getSubcommand() === 'withdraw') {
             functions.createRecentCommand(interaction.user.id, `balance-withdraw`, `AMOUNT: ${interaction.options.getInteger('amount')}`, interaction)
-            const userProfile = await profileSchema.findOne({userId: interaction.user.id})
+            const userProfile = await profileSchema.findOne({
+                userId: interaction.user.id
+            })
             const amountToMove = interaction.options.getInteger('amount')
             if (!userProfile) {
                 interaction.reply({
@@ -340,7 +359,9 @@ module.exports = {
                     ephemeral: true
                 })
 
-                profileSchema.create({userId: interaction.user.id})
+                profileSchema.create({
+                    userId: interaction.user.id
+                })
             }
             if (amountToMove < 0) return interaction.reply({
                 embeds: [
@@ -385,28 +406,32 @@ module.exports = {
                 ]
             })
         } else if (interaction.options.getSubcommand() === 'view') {
-        functions.createRecentCommand(interaction.user.id, `balance-view`, 'None', interaction)
-        const result = await profileSchema.findOne({userId: interaction.user.id})
-        if (!result) {
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                    .setTitle(`${interaction.user.username}'s balance`)
-                    .setColor('0xa744f2')
-                    .setDescription(`**Wallet**: \`0\` coins\n**Bank**: \`0\` coins`)
-                ]
+            functions.createRecentCommand(interaction.user.id, `balance-view`, 'None', interaction)
+            const result = await profileSchema.findOne({
+                userId: interaction.user.id
             })
-            profileSchema.create({userId: interaction.user.id})
-        } else {
-            interaction.reply({
-                embeds: [
-                    new MessageEmbed()
-                    .setTitle(`${interaction.user.username}'s balance`)
-                    .setColor('0xa744f2')
-                    .setDescription(`**Wallet**: \`${result.wallet.toLocaleString()}\` coins\n**Bank**: \`${result.bank.toLocaleString()}\` coins`)
-                ]
-            })
+            if (!result) {
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                        .setTitle(`${interaction.user.username}'s balance`)
+                        .setColor('0xa744f2')
+                        .setDescription(`**Wallet**: \`0\` coins\n**Bank**: \`0\` coins`)
+                    ]
+                })
+                profileSchema.create({
+                    userId: interaction.user.id
+                })
+            } else {
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                        .setTitle(`${interaction.user.username}'s balance`)
+                        .setColor('0xa744f2')
+                        .setDescription(`**Wallet**: \`${result.wallet.toLocaleString()}\` coins\n**Bank**: \`${result.bank.toLocaleString()}\` coins`)
+                    ]
+                })
+            }
         }
-    }
     }
 }

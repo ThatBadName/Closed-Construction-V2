@@ -123,12 +123,12 @@ module.exports = {
                     }
                     continue
                 }
-    
+
                 let badgeInv = []
                 for (var x = 0; x < array.length; x++) {
                     badgeInv.push(`${array[x]}`)
                 }
-    
+
                 return badgeInv
             }
         } else if (interaction.options.getSubcommand() === 'edit') {
@@ -288,7 +288,7 @@ module.exports = {
                             const result = await profileSchema.findOne({
                                 userId: i.user.id,
                             })
-                            
+
                             if (!result) {
                                 const profileUpdatedEmbed = new MessageEmbed()
                                     .setColor('0xa744f2')
@@ -311,10 +311,20 @@ module.exports = {
                                 })
                                 areYouSure.delete()
                                 result.delete()
-                                invSchema.collection.deleteMany({userId: i.user.id})
-                                commandCooldowns.collection.deleteMany({userId: i.user.id})
+                                invSchema.collection.deleteMany({
+                                    userId: i.user.id
+                                })
+                                commandCooldowns.collection.deleteMany({
+                                    userId: i.user.id
+                                })
                                 if (result.developer === true) {
-                                    profileSchema.create({userId: interaction.user.id, developer: true, badges: [{_id: "<:developer:995407005864955924>"}]})
+                                    profileSchema.create({
+                                        userId: interaction.user.id,
+                                        developer: true,
+                                        badges: [{
+                                            _id: "<:developer:995407005864955924>"
+                                        }]
+                                    })
                                 }
                                 placeHolder = 'This user has no bio'
                             }

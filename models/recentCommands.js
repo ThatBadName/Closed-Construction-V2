@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose
+const {
+   Schema
+} = mongoose
 
 const schema = new Schema({
    userId: String,
@@ -9,7 +11,10 @@ const schema = new Schema({
    Id: String,
    guildName: String,
    guildId: String,
-   suspicious: {type: Boolean, default: false}
+   suspicious: {
+      type: Boolean,
+      default: false
+   }
 }, {
    timestamps: true
 })

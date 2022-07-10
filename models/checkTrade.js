@@ -4,12 +4,12 @@ const {
 } = mongoose
 
 const schema = new Schema({
-   code: String,
-   plan: String,
-   type: String
+   userId: String,
+   inTradeWithId: String,
+   message: String
 }, {
    timestamps: false
 })
 
-const name = 'premium code'
+const name = 'check trade'
 module.exports = mongoose.models[name] || mongoose.model(name, schema)

@@ -67,7 +67,10 @@ async function blacklistCheck(idUser, idGuild, interaction) {
 
 async function checkMaintinance(interaction) {
     const checkMain = await maintenance.findOne()
-    const userProfileDev = await profileSchema.findOne({userId: interaction.user.id, developer: true})
+    const userProfileDev = await profileSchema.findOne({
+        userId: interaction.user.id,
+        developer: true
+    })
     if (userProfileDev) return
     if (checkMain) {
         interaction.reply({
@@ -84,7 +87,10 @@ async function checkMaintinance(interaction) {
 
 
 async function cooldownCheck(userID, command, timeout, interaction) {
-    const userProfileDev = await profileSchema.findOne({userId: interaction.user.id, devMode: true})
+    const userProfileDev = await profileSchema.findOne({
+        userId: interaction.user.id,
+        devMode: true
+    })
     if (userProfileDev) return
     const checkForCooldowns = await commandCooldowns.findOne({
         userId: userID,
@@ -113,7 +119,10 @@ async function cooldownCheck(userID, command, timeout, interaction) {
 }
 
 async function cooldownRobCheck(userID, userRobbedId, timeout, interaction) {
-    const userProfileDev = await profileSchema.findOne({userId: interaction.user.id, devMode: true})
+    const userProfileDev = await profileSchema.findOne({
+        userId: interaction.user.id,
+        devMode: true
+    })
     if (userProfileDev) return
     const checkForCooldowns = await robCooldowns.findOne({
         userRobbedId: userRobbedId,
@@ -151,7 +160,15 @@ async function createRecentCommand(userId, command, commandInfo, interaction) {
     passString = password.join('')
     const expires = new Date()
     expires.setHours(expires.getHours() + 24)
-    recentCommandSchema.create({userId: userId, command: command, commandInfo: commandInfo, expires: expires, Id: 'A-' + passString, guildName: interaction.guild.name, guildId: interaction.guild.id})
+    recentCommandSchema.create({
+        userId: userId,
+        command: command,
+        commandInfo: commandInfo,
+        expires: expires,
+        Id: 'A-' + passString,
+        guildName: interaction.guild.name,
+        guildId: interaction.guild.id
+    })
 
 }
 
@@ -200,7 +217,11 @@ async function createNewNotif(userId, notification) {
         password.push(possible.charAt(Math.floor(Math.random() * possible.length)));
     }
     passString = password.join('')
-    notificationSchema.create({userId: userId, notification: notification, Id: 'N-' + passString})
+    notificationSchema.create({
+        userId: userId,
+        notification: notification,
+        Id: 'N-' + passString
+    })
 }
 
 async function createNotifsPagesSmall(notifications) {
@@ -216,7 +237,9 @@ async function createNotifsPagesSmall(notifications) {
             .setColor('0xa744f2')
             .setTitle(`Notifications`)
             .setDescription(info)
-            .setFooter({text: `Do /notifications show:<id> to see more info on a notification`})
+            .setFooter({
+                text: `Do /notifications show:<id> to see more info on a notification`
+            })
         notifEmbeds.push(embed)
     }
     return notifEmbeds
@@ -241,60 +264,80 @@ async function createNotifsPagesLarge(notifications) {
 }
 
 async function checkPremiumUser(userId) {
-    const check = await premiumUsers.findOne({userId: userId})
+    const check = await premiumUsers.findOne({
+        userId: userId
+    })
     if (check) return true
 }
 
 async function checkPremiumGuild(guildId) {
-    const check = await premiumGuilds.findOne({guildId: guildId})
+    const check = await premiumGuilds.findOne({
+        guildId: guildId
+    })
     if (check) return true
 }
 
 async function createPremiumUser(userId, expiresInMinutes) {
-    const check = await premiumUsers.findOne({userId: userId})
+    const check = await premiumUsers.findOne({
+        userId: userId
+    })
     const date = new Date()
     date.setMinutes(date.getMinutes() + expiresInMinutes)
     if (check) {
         check.delete()
-        return await premiumUsers.create({userId: userId, expires: expiresInMinutes})
+        return await premiumUsers.create({
+            userId: userId,
+            expires: expiresInMinutes
+        })
     }
-    await premiumUsers.create({userId: userId, expires: expiresInMinutes})
+    await premiumUsers.create({
+        userId: userId,
+        expires: expiresInMinutes
+    })
 }
 
 async function createPremiumGuild(guildId, expiresInMinutes) {
-    const check = await premiumGuilds.findOne({guildId: guildId})
+    const check = await premiumGuilds.findOne({
+        guildId: guildId
+    })
     const date = new Date()
     date.setMinutes(date.getMinutes() + expiresInMinutes)
     if (check) {
         check.delete()
-        return await premiumGuilds.create({guildId: guildId, expires: expiresInMinutes})
+        return await premiumGuilds.create({
+            guildId: guildId,
+            expires: expiresInMinutes
+        })
     }
-    await premiumGuilds.create({guildId: userId, expires: expiresInMinutes})
+    await premiumGuilds.create({
+        guildId: userId,
+        expires: expiresInMinutes
+    })
 }
 
 async function genPremiumCode(amount, plan, type) {
     let codes = []
 
     for (var i = 0; i < amount; i++) {
-    const codePremium = voucher_codes.generate({
-        pattern: "#####-#####-#####-#####",
-    });
-
-    const code = codePremium.toString().toUpperCase();
-
-    const find = await premiumCodeSchema.findOne({
-        code: code,
-    });
-
-    if (!find) {
-        premiumCodeSchema.create({
-        code: code,
-        plan: plan,
-        type: type
+        const codePremium = voucher_codes.generate({
+            pattern: "#####-#####-#####-#####",
         });
 
-        codes.push(`${i + 1}- ${code}`);
-    }
+        const code = codePremium.toString().toUpperCase();
+
+        const find = await premiumCodeSchema.findOne({
+            code: code,
+        });
+
+        if (!find) {
+            premiumCodeSchema.create({
+                code: code,
+                plan: plan,
+                type: type
+            });
+
+            codes.push(`${i + 1}- ${code}`);
+        }
     }
 
     return codes

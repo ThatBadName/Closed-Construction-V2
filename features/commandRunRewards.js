@@ -10,11 +10,15 @@ module.exports = (client) => {
         client.on('interactionCreate', async (interaction) => {
             const checkMain = await maintenance.find()
             if (checkMain) return
-            const checkBlUs = await blacklistedUsers.findOne({userId: interaction.user.id})
-            const checkBlGi = await blacklistedGuilds.findOne({userId: interaction.guild.id})
+            const checkBlUs = await blacklistedUsers.findOne({
+                userId: interaction.user.id
+            })
+            const checkBlGi = await blacklistedGuilds.findOne({
+                userId: interaction.guild.id
+            })
             if (checkBlGi) return
             if (checkBlUs) return
-            
+
             if (interaction.type !== 'APPLICATION_COMMAND') return
             if (interaction.commandName === 'profile') return
             if (interaction.commandName === 'help') return
@@ -45,7 +49,7 @@ module.exports = (client) => {
                 if (result.dmNotifs === true) {
                     try {
                         interaction.user.send({
-                        embeds: [new MessageEmbed().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
+                            embeds: [new MessageEmbed().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
                         })
                     } catch (err) {
                         interaction.channel.send({

@@ -34,13 +34,19 @@ module.exports = {
         const cldn = await functions.cooldownCheck(interaction.user.id, 'text', 5, interaction)
         if (cldn === true) return
 
-        
+
         const userRecieve = interaction.options.getUser('user')
         const userSend = interaction.user
         functions.createRecentCommand(interaction.user.id, 'text', `USER: ${userRecieve}`, interaction)
 
-        const block1 = await blockSchema.findOne({blockedById: interaction.user.id, blockedUserId: userRecieve.id})
-        const block2 = await blockSchema.findOne({blockedUserId: interaction.user.id, blockedById: userRecieve.id})
+        const block1 = await blockSchema.findOne({
+            blockedById: interaction.user.id,
+            blockedUserId: userRecieve.id
+        })
+        const block2 = await blockSchema.findOne({
+            blockedUserId: interaction.user.id,
+            blockedById: userRecieve.id
+        })
 
         if (block1) return interaction.reply({
             embeds: [
@@ -102,12 +108,12 @@ module.exports = {
             .setCustomId(`text-modal-${userRecieve.id}-${interaction.guild.id}`)
 
         const text_message_modal = new TextInputComponent()
-        .setMaxLength(150)
-        .setCustomId(`text-message`)
-        .setLabel('Message')
-        .setRequired(true)
-        .setPlaceholder(`Hi ${userRecieve.username}! How are you?`)
-        .setStyle('PARAGRAPH')
+            .setMaxLength(150)
+            .setCustomId(`text-message`)
+            .setLabel('Message')
+            .setRequired(true)
+            .setPlaceholder(`Hi ${userRecieve.username}! How are you?`)
+            .setStyle('PARAGRAPH')
 
         firstText = new MessageActionRow().addComponents(text_message_modal)
         messageModal.addComponents(firstText)

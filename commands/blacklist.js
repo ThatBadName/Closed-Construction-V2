@@ -170,10 +170,10 @@ module.exports = {
 
                     pageButtonCollector.on('collect', async (i) => {
                         if (i.user.id !== interaction.user.id)
-                        return i.reply({
-                            content: 'You are not owner of this button!',
-                            ephemeral: true,
-                        })
+                            return i.reply({
+                                content: 'You are not owner of this button!',
+                                ephemeral: true,
+                            })
                         if (i.customId === 'backPage') {
                             if (currentPage !== 0) {
                                 --currentPage
@@ -308,10 +308,10 @@ module.exports = {
 
                     pageButtonCollector.on('collect', async (i) => {
                         if (i.user.id !== interaction.user.id)
-                        return i.reply({
-                            content: 'You are not owner of this button!',
-                            ephemeral: true,
-                        })
+                            return i.reply({
+                                content: 'You are not owner of this button!',
+                                ephemeral: true,
+                            })
                         if (i.customId === 'backPage') {
                             if (currentPage !== 0) {
                                 --currentPage
