@@ -232,11 +232,11 @@ module.exports = {
             .setChoices(
                 {
                     name: 'Add/Remove',
-                    value: '0'
+                    value: 'addorremove'
                 },
                 {
                     name: 'Set',
-                    value: '1'
+                    value: 'set'
                 }
             )
         )
@@ -1056,7 +1056,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.wallet = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1076,7 +1076,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.wallet += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1124,7 +1124,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.bank = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1144,7 +1144,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.bank += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1188,7 +1188,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.level = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1205,7 +1205,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.level += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1246,7 +1246,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.xp = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1263,7 +1263,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.xp += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1304,7 +1304,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.requiredXp = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1321,7 +1321,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.requiredXp += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1362,7 +1362,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.xpBoost = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1379,7 +1379,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.xpBoost += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1420,7 +1420,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.maxBank = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1437,7 +1437,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.maxBank += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1478,7 +1478,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.coinMulti = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1495,7 +1495,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.coinMulti += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1536,7 +1536,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.planetLevel = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1553,7 +1553,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.planetLevel += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1594,7 +1594,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.planetXp = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1611,7 +1611,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.planetXp += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1652,7 +1652,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.requiredPlanetXp = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1669,7 +1669,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.requiredPlanetXp += amount
                     userProfile.save()
                     return interaction.reply({
@@ -1710,7 +1710,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '1') {
+                } else if (action === 'set') {
                     userProfile.unlockedPlanetLevel = amount
                     await userProfile.save()
                     return interaction.reply({
@@ -1727,7 +1727,7 @@ module.exports = {
                             })
                         ]
                     })
-                } else if (action === '0') {
+                } else if (action === 'addorremove') {
                     userProfile.unlockedPlanetLevel += amount
                     userProfile.save()
                     return interaction.reply({
