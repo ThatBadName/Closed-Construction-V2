@@ -200,8 +200,11 @@ module.exports = {
                 ]
             })
             const jobFound = allJobs.find((value) => value.name === jobQuery)
-            if (jobFound.pay < 300000) {
-                const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 3600, interaction)
+            if (jobFound.pay < 250000) {
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 1800, interaction)
+                if (cldn === true) return
+            } else if (jobFound.pay > 700000) {
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 7200, interaction)
                 if (cldn === true) return
             } else {
                 const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 3600, interaction)
