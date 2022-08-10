@@ -54,7 +54,7 @@ module.exports = {
                             value: 'dmnotifs',
                         },
                         {
-                            label: 'Passive',
+                            label: 'Passive Mode',
                             description: 'Be immune to robbing. You will also not be able to interact with other users',
                             value: 'passive',
                         },
@@ -62,6 +62,11 @@ module.exports = {
                             label: 'Unread Notification Alert',
                             description: 'Get notified when you have an unread notification',
                             value: 'notifalert',
+                        },
+                        {
+                            label: 'Vote Alerts',
+                            description: 'Get notified when you can vote again',
+                            value: 'votealert',
                         }
                     ]),
                 )
@@ -83,7 +88,7 @@ module.exports = {
                             value: 'dmnotifs',
                         },
                         {
-                            label: 'Passive',
+                            label: 'Passive Mode',
                             description: 'Be immune to robbing. You will also not be able to interact with other users',
                             value: 'passive',
                         },
@@ -91,6 +96,11 @@ module.exports = {
                             label: 'Unread Notification Alert',
                             description: 'Get notified when you have an unread notification',
                             value: 'notifalert',
+                        },
+                        {
+                            label: 'Vote Alerts',
+                            description: 'Get notified when you can vote again',
+                            value: 'votealert',
                         }
                     ]),
                 )
@@ -149,6 +159,7 @@ module.exports = {
                     if (currentSetting === 'dmNotifs') userProfile.dmNotifs = true
                     if (currentSetting === 'texting') userProfile.texting = true
                     if (currentSetting === 'notifalert') userProfile.unreadAlert = true
+                    if (currentSetting === 'votealert') userProfile.voteReminders = true
                     if (currentSetting === 'passive') {
                         const checkForPassive = await passiveCooldownSchema.findOne({
                             userId: interaction.user.id
@@ -178,19 +189,7 @@ module.exports = {
                     userProfile.save()
                     buttons.components[0].setDisabled(true)
                     buttons.components[1].setDisabled(false)
-                    if (currentSetting === 'devMode') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'dmNotifs') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'texting') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'notifalert') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'passive') collectorMessage.edit({
+                    collectorMessage.edit({
                         components: [selectMenuDevUsed, buttons]
                     })
                     collector.resetTimer()
@@ -200,6 +199,7 @@ module.exports = {
                     if (currentSetting === 'dmNotifs') userProfile.dmNotifs = false
                     if (currentSetting === 'texting') userProfile.texting = false
                     if (currentSetting === 'notifalert') userProfile.unreadAlert = false
+                    if (currentSetting === 'votealert') userProfile.voteReminders = false
                     if (currentSetting === 'passive') {
                         const checkForPassive = await passiveCooldownSchema.findOne({
                             userId: interaction.user.id
@@ -230,19 +230,7 @@ module.exports = {
                     userProfile.save()
                     buttons.components[0].setDisabled(false)
                     buttons.components[1].setDisabled(true)
-                    if (currentSetting === 'devMode') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'dmNotifs') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'texting') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'notifalert') collectorMessage.edit({
-                        components: [selectMenuDevUsed, buttons]
-                    })
-                    if (currentSetting === 'passive') collectorMessage.edit({
+                    collectorMessage.edit({
                         components: [selectMenuDevUsed, buttons]
                     })
                     collector.resetTimer()
@@ -337,6 +325,24 @@ module.exports = {
                         })
                         collector.resetTimer()
                         i.deferUpdate()
+                    } else if (i.values[0] === 'votealert') {
+                        currentSetting = 'votealert'
+                        settingsEmbed.setTitle('Vote Alerts')
+                            .setDescription('Get notified when you can vote again')
+                        if (userProfile.voteReminders === false) {
+                            buttons.components[0].setDisabled(false)
+                            buttons.components[1].setDisabled(true)
+                        } else {
+                            buttons.components[0].setDisabled(true)
+                            buttons.components[1].setDisabled(false)
+                        }
+
+                        collectorMessage.edit({
+                            embeds: [settingsEmbed],
+                            components: [selectMenuDevUsed, buttons]
+                        })
+                        collector.resetTimer()
+                        i.deferUpdate()
                     }
                 }
             })
@@ -365,7 +371,7 @@ module.exports = {
                             value: 'dmnotifs',
                         },
                         {
-                            label: 'Passive',
+                            label: 'Passive Mode',
                             description: 'Be immune to robbing. You will also not be able to interact with other users',
                             value: 'passive',
                         },
@@ -373,6 +379,11 @@ module.exports = {
                             label: 'Unread Notification Alert',
                             description: 'Get notified when you have an unread notification',
                             value: 'notifalert',
+                        },
+                        {
+                            label: 'Vote Alerts',
+                            description: 'Get notified when you can vote again',
+                            value: 'votealert',
                         }
                     ]),
                 )
@@ -390,7 +401,7 @@ module.exports = {
                             value: 'dmnotifs',
                         },
                         {
-                            label: 'Passive',
+                            label: 'Passive Mode',
                             description: 'Be immune to robbing. You will also not be able to interact with other users',
                             value: 'passive',
                         },
@@ -398,6 +409,11 @@ module.exports = {
                             label: 'Unread Notification Alert',
                             description: 'Get notified when you have an unread notification',
                             value: 'notifalert',
+                        },
+                        {
+                            label: 'Vote Alerts',
+                            description: 'Get notified when you can vote again',
+                            value: 'votealert',
                         }
                     ]),
                 )
@@ -455,6 +471,7 @@ module.exports = {
                     if (currentSetting === 'dmNotifs') userProfile.dmNotifs = true
                     if (currentSetting === 'texting') userProfile.texting = true
                     if (currentSetting === 'notifalert') userProfile.unreadAlert = true
+                    if (currentSetting === 'votealert') userProfile.voteReminders = true
                     if (currentSetting === 'passive') {
                         const checkForPassive = await passiveCooldownSchema.findOne({
                             userId: interaction.user.id
@@ -484,16 +501,7 @@ module.exports = {
                     userProfile.save()
                     buttons.components[0].setDisabled(true)
                     buttons.components[1].setDisabled(false)
-                    if (currentSetting === 'dmNotifs') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'texting') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'notifalert') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'passive') collectorMessage.edit({
+                    collectorMessage.edit({
                         components: [selectMenuUsed, buttons]
                     })
                     collector.resetTimer()
@@ -502,6 +510,7 @@ module.exports = {
                     if (currentSetting === 'texting') userProfile.texting = false
                     if (currentSetting === 'dmNotifs') userProfile.dmNotifs = false
                     if (currentSetting === 'notifalert') userProfile.unreadAlert = false
+                    if (currentSetting === 'votealert') userProfile.voteReminders = false
                     if (currentSetting === 'passive') {
                         const checkForPassive = await passiveCooldownSchema.findOne({
                             userId: interaction.user.id
@@ -531,16 +540,7 @@ module.exports = {
                     userProfile.save()
                     buttons.components[0].setDisabled(false)
                     buttons.components[1].setDisabled(true)
-                    if (currentSetting === 'dmNotifs') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'texting') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'notifalert') collectorMessage.edit({
-                        components: [selectMenuUsed, buttons]
-                    })
-                    if (currentSetting === 'passive') collectorMessage.edit({
+                    collectorMessage.edit({
                         components: [selectMenuUsed, buttons]
                     })
                     collector.resetTimer()
@@ -605,6 +605,24 @@ module.exports = {
                         settingsEmbed.setTitle('Passive Mode')
                             .setDescription('Be immune to robbing. You will also not be able to interact with other users')
                         if (userProfile.passive === false) {
+                            buttons.components[0].setDisabled(false)
+                            buttons.components[1].setDisabled(true)
+                        } else {
+                            buttons.components[0].setDisabled(true)
+                            buttons.components[1].setDisabled(false)
+                        }
+
+                        collectorMessage.edit({
+                            embeds: [settingsEmbed],
+                            components: [selectMenuUsed, buttons]
+                        })
+                        collector.resetTimer()
+                        i.deferUpdate()
+                    } else if (i.values[0] === 'votealert') {
+                        currentSetting = 'votealert'
+                        settingsEmbed.setTitle('Vote Alerts')
+                            .setDescription('Get notified when you can vote again')
+                        if (userProfile.voteReminders === false) {
                             buttons.components[0].setDisabled(false)
                             buttons.components[1].setDisabled(true)
                         } else {

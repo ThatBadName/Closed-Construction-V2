@@ -49,14 +49,14 @@ async function begOnEarth(interaction) {
     } else if (willGetRandomItem === 0) {
         const lookupFunnyDog = await invSchema.findOne({
             userId: interaction.user.id,
-            itemId: 'mayo-dog'
+            itemId: 'funny dog'
         })
         if (!lookupFunnyDog) invSchema.create({
             userId: interaction.user.id,
-            itemId: 'mayo-dog',
+            itemId: 'funny dog',
             item: 'Funny dog',
             amount: 1,
-            emoji: '<:FunnyDog:995418957601329222>'
+            emoji: '<:FunnyDog:1006293232780587178>'
         })
         else lookupFunnyDog.amount += 1;
         lookupFunnyDog.save()
@@ -66,7 +66,7 @@ async function begOnEarth(interaction) {
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} went begging in the pet shop`)
                 .setColor('0xa744fc')
-                .setDescription(`The pet shop owner gave you a <:FunnyDog:995418957601329222> Funny Dog but took your shovel`)
+                .setDescription(`The pet shop owner gave you a <:FunnyDog:1006293232780587178> Funny Dog but took your shovel`)
             ],
             components: [
                 new ActionRowBuilder()

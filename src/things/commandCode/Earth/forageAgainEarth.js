@@ -6,29 +6,29 @@ const {
     ButtonBuilder
 } = require('discord.js')
 
-async function digAgainOnEarth(interaction) {
+async function forageAgainEarth(interaction) {
     let userProfile = await profileSchema.findOne({
         userId: interaction.user.id
     })
     if (!userProfile) userProfile = await profileSchema.create({userId: interaction.user.id})
 
-    const checkForShovel = await invSchema.findOne({
+    const checkForAxe = await invSchema.findOne({
         userId: interaction.user.id,
-        itemId: 'shovel'
+        itemId: 'axe'
     })
-    if (!checkForShovel) return interaction.reply({
+    if (!checkForAxe) return interaction.reply({
         embeds: [
             new EmbedBuilder()
-            .setTitle('You need a shovel to use this')
+            .setTitle('You need an axe to use this')
             .setColor('0xa744fc')
-            .setDescription('You can buy a shovel from the shop (\`/shop buy item:shovel\`)')
+            .setDescription('You can buy an axe from the shop (\`/shop buy item:axe\`)')
         ],
         components: [
             new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                .setLabel('Dig Again')
-                .setCustomId('dig-again')
+                .setLabel('Forage Again')
+                .setCustomId('forage-again')
                 .setStyle('Secondary')
             )
         ]
@@ -38,19 +38,25 @@ async function digAgainOnEarth(interaction) {
     const willGetRandomItem = Math.round(Math.random() * 25)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
-        'Your shovel hit a rock and shattered into pieces',
-        'Some mole decided to grab your shovel and hide it',
-        'Your hands got sweaty and you dropped your shovel. You got too lazy to pick it up so you went home',
-        'You left your shovel at home and a beaver ate it',
-        'You met Bad in the quary and he took your shovel',
-        'KSchlatt decided to prank you but it went a bit far.. You lost your shovel'
+        `A wolf came and stole your axe`,
+        `You ate some berries that made you feel sick, you went home leaving your axe in the woods`,
+        `You tried to cut some wood that was too hard`,
+        `You lost your axe`
     ]
 
     if (willGetRandomItem === 0) {
         const randomItems = [
-            `mayo-dog,<:FunnyDog:1006293232780587178>,Funny Dog`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            `string,<:ImageNotFound:1005453599800840262>,String`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
             `tape,<:DuctTape:1006293231476166737>,Tape`,
-            `glue,<:Glue:1006637919873806416>,Glue`
+            `wood,<:ImageNotFound:1005453599800840262>,Wood`,
+            `metal,<:ImageNotFound:1005453599800840262>,Metal`,
+            `plastic,<:ImageNotFound:1005453599800840262>,Plastic`,
+            `camera,<:ImageNotFound:1005453599800840262>,Camera`,
         ]
         let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
         const lookupItem = await invSchema.findOne({
@@ -69,29 +75,29 @@ async function digAgainOnEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForAxe.amount === 1) checkForAxe.delete()
+        else {checkForAxe.amount -= 1; checkForAxe.save()}
 
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Forage Again')
+                    .setCustomId('forage-again')
                     .setStyle('Secondary')
                 )
             ]
         })
     } else if (willToolBreak === 0) {
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForAxe.amount === 1) checkForAxe.delete()
+        else {checkForAxe.amount -= 1; checkForAxe.save()}
 
         interaction.reply({
             embeds: [
@@ -104,8 +110,8 @@ async function digAgainOnEarth(interaction) {
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Forage Again')
+                    .setCustomId('forage-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -119,16 +125,16 @@ async function digAgainOnEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} dug in the ground`)
+                .setTitle(`${interaction.user.tag} went forgaing`)
                 .setColor('0xa744f2')
-                .setDescription(`You went digging and found \`${amount.toLocaleString()}\` coins`)
+                .setDescription(`You went foraging and found \`${amount.toLocaleString()}\` coins`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Forage Again')
+                    .setCustomId('forage-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -137,5 +143,5 @@ async function digAgainOnEarth(interaction) {
 }
 
 module.exports = {
-    digAgainOnEarth
+    forageAgainEarth
 }

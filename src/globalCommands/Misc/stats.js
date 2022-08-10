@@ -23,15 +23,15 @@ module.exports = {
                 .setColor('0xa477fc')
                 .setFields({
                     name: 'Ping',
-                    value: `**API Latency**: \`${client.ws.ping}\`ms\n**Client Ping**: \`${message.createdTimestamp - interaction.createdTimestamp}\`ms`,
+                    value: `API Latency: \`${client.ws.ping}\`ms\nClient Ping: \`${message.createdTimestamp - interaction.createdTimestamp}\`ms`,
                     inline: true
                 }, {
                     name: 'Counts',
                     value:
-                        `**Registered Users**: \`${registeredUserCount.length}\`\n` +
-                        `**Most Coins In Wallet**: \`${highestWallet.wallet.toLocaleString()}\` (<@${highestWallet.userId}>)\n` +
-                        `**Most Coins In Bank**: \`${highestBank.bank.toLocaleString()}\` (<@${highestBank.userId}>)\n` +
-                        `\n**Server Count**: \`${client.guilds.cache.size.toLocaleString()}\`\n`
+                        `Registered Users: \`${registeredUserCount.length}\`\n` +
+                        `Most Coins In Wallet: \`${highestWallet.wallet.toLocaleString()}\` (<@${highestWallet.userId}>)\n` +
+                        `Most Coins In Bank: \`${highestBank.bank.toLocaleString()}\` (<@${highestBank.userId}>)\n` +
+                        `\nServers: \`${client.guilds.cache.size.toLocaleString()}\`\nUsers: \`${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString()}\``
                 })
             ]
         })

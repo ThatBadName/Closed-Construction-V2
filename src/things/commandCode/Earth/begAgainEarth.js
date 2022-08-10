@@ -51,11 +51,11 @@ async function begAgainEarth(interaction) {
     } else if (willGetRandomItem === 0) {
         const lookupFunnyDog = await invSchema.findOne({
             userId: interaction.user.id,
-            itemId: 'mayo-dog'
+            itemId: 'funny dog'
         })
         if (!lookupFunnyDog) invSchema.create({
             userId: interaction.user.id,
-            itemId: 'mayo-dog',
+            itemId: 'funny dog',
             item: 'Funny dog',
             amount: 1,
             emoji: '<:FunnyDog:995418957601329222>'

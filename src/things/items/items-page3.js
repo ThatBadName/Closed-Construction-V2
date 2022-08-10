@@ -5,11 +5,11 @@ module.exports = [
         sellPrice: 12000,
         buyPrice: 40000,
         tradeValue: 6000,
-        emoji: '',
+        emoji: '<:Berries:1006621693009215559>',
         id: 'berries',
         type: 'Collectable',
         rarity: 'Uncommon',
-        url: '',
+        url: 'https://imgur.com/IifsgUx.png',
         usable: false //Change to true
     },
 ]

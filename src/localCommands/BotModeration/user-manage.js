@@ -189,29 +189,13 @@ module.exports = {
             .setRequired(true)
             .addChoices(
                 {
-                    name: 'Developer Badge',
-                    value: '<:developer:995407005864955924>'
-                },
-                {
-                    name: 'Admin Badge',
-                    value: '<:botAdmin:996186649191002192>'
-                },
-                {
-                    name: 'Moderator Badge',
-                    value: '<:botModerator:996136262064939098>'
-                },
-                {
                     name: 'Support Badge',
-                    value: '<:Support:995031355878559884>'
+                    value: '<:SupportBadge:1006813848071843920>'
                 },
                 {
                     name: 'Partner Badge',
-                    value: '<:Partner:995031353810755656>'
+                    value: '<:PartnerBadge:1006699813229842523>'
                 },
-                {
-                    name: 'Beta User',
-                    value: '<:betaUser:995092836879978589>'
-                }
             )
         )
     )
@@ -1776,7 +1760,7 @@ module.exports = {
                         new EmbedBuilder()
                         .setTitle('User Found')
                         .setColor('0xa744f2')
-                        .setDescription(`**User**: <@${result.userId}> (\`${result.userId}\`)\n**Bio**: ${result.bio}\n**Badges**: ${invItems.length === 0 ? 'None' : invItems}\n**Rank**: ${result.developer === true ? '<:developer:995407005864955924> Developer' : `${result.botAdmin === true ? '<:botAdmin:996186649191002192> Bot Admin' : `${result.botModerator === true ? '<:botModerator:996136262064939098> Bot Moderator' : 'Regular'}`}`}\n${result.job !== '' ? `Works as a \`${result.job}\`` : ''}\n**Profile Created**: <t:${Math.round(result.createdAt.getTime() / 1000)}> (<t:${Math.round(result.createdAt.getTime() / 1000)}:R>)`)
+                        .setDescription(`**User**: <@${result.userId}> (\`${result.userId}\`)\n**Bio**: ${result.bio}\n**Badges**: ${invItems.length === 0 ? 'None' : invItems}\n**Rank**: ${result.developer === true ? '<:DeveloperBadge:1006817283550761051> Developer' : `${result.botAdmin === true ? '<:AdminBadge:1006817282061762570> Bot Admin' : `${result.botModerator === true ? '<:ModeratorBadge:1006817284846792765> Bot Moderator' : 'Regular'}`}`}\n${result.job !== '' ? `Works as a \`${result.job}\`` : ''}\n**Profile Created**: <t:${Math.round(result.createdAt.getTime() / 1000)}> (<t:${Math.round(result.createdAt.getTime() / 1000)}:R>)`)
                         .setFields({
                             name: 'Level',
                             value: `Bot Level: \`${result.level}\`\nPlanet Level: \`${result.planetLevel}\`\nUnlocked Planet Level: \`${result.unlockedPlanetLevel}\``,

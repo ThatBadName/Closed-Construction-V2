@@ -106,6 +106,14 @@ const schema = new Schema({
    job: {
       type: String,
       default: ''
+   },
+   canVote: {
+      type: Boolean,
+      default: false
+   },
+   voteReminders: {
+      type: Boolean,
+      deafult: true
    }
 
 }, {

@@ -21,12 +21,13 @@ module.exports = {
         ),
     async autocomplete(interaction, client) {
         const focusedValue = interaction.options.getFocused()
-        const choices = await notificationSchema.distinct("Id", { "userId": interaction.user.id}).sort()
+        let choices = await notificationSchema.find({userId: interaction.user.id}).sort({_id: -1})
+        choices = choices.map(n => `${n.Id},${n.Id.slice(2, 7)}`)
         const filtered = choices.filter((choice) =>
             choice.includes(focusedValue)
         ).slice(0, 25)
         await interaction.respond(
-            filtered.map((choice) => ({name: choice, value: choice}))
+            filtered.map((choice) => ({name: choice.split(',')[1], value: choice.split(',')[0]}))
         )
     },
 
@@ -91,21 +92,31 @@ module.exports = {
             })
             const commandEmbeds = await functions.createNotifsPagesLarge(searchResults)
             functions.createRecentCommand(interaction.user.id, `notifications`, `SHOW: ${interaction.options.getString('show')}`, interaction)
+            let firstEmbed
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
-            }
-            const firstEmbed = await wait.edit({
-                embeds: [commandEmbeds[0]],
-                components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                fetchReply: true
-            }).catch(() => {
-                return wait.edit({
-                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No notifications with that ID')],
+                firstEmbed = await wait.edit({
+                    embeds: [commandEmbeds[0]],
                     fetchReply: true
+                }).catch(() => {
+                    return wait.edit({
+                        embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No notifications with that ID')],
+                        fetchReply: true
+                    })
                 })
-            })
+            } else {
+                firstEmbed = await wait.edit({
+                    embeds: [commandEmbeds[0]],
+                    components: [pageButtons],
+                    fetchReply: true
+                }).catch(() => {
+                    return wait.edit({
+                        embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No notifications with that ID')],
+                        fetchReply: true
+                    })
+                })
+            }
 
             const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
                 componentType: 'BUTTON',

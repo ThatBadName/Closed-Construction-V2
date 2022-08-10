@@ -196,7 +196,7 @@ module.exports = {
 
                     if (i.customId === 'leave-guild') {
                         actionTaken = true
-                        confirmEmbed.stop()
+                        confirmLeave.stop()
                         guild.leave()
                         confirmEmbed.edit({
                             embeds: [
@@ -230,7 +230,7 @@ module.exports = {
                         })
                     } else if (i.customId === 'stay-guild') {
                         actionTaken = true
-                        confirmEmbed.stop()
+                        confirmLeave.stop()
                         confirmEmbed.edit({
                             embeds: [
                                 new EmbedBuilder()
@@ -363,7 +363,7 @@ module.exports = {
 
                     if (i.customId === 'leave-guild') {
                         actionTaken = true
-                        confirmEmbed.stop()
+                        confirmLeave.stop()
                         guild.leave()
                         confirmEmbed.edit({
                             embeds: [
@@ -397,7 +397,7 @@ module.exports = {
                         })
                     } else if (i.customId === 'stay-guild') {
                         actionTaken = true
-                        confirmEmbed.stop()
+                        confirmLeave.stop()
                         confirmEmbed.edit({
                             embeds: [
                                 new EmbedBuilder()

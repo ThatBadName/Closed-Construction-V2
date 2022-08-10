@@ -84,7 +84,7 @@ module.exports = {
             if (!search) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                    .setTitle('I could not find an item')
+                    .setTitle('I could not find that item')
                     .setColor('0xa744f2')
                 ]
             })

@@ -117,20 +117,49 @@ async function cooldownCheck(userID, command, timeout, interaction) {
     }
     const result = await activeDevCoinSchema.findOne({userId: userID})
     const date = new Date()
-    if (result && interaction.commandName !== 'daily' && interaction.commandName !== 'weekly' && interaction.commandName !== 'monthly' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
-        date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
-        commandCooldowns.create({
-            userId: userID,
-            command: command,
-            expires: date
-        })
+    if (interaction.commandName === 'claim') {
+        if (interaction.options.getSubcommand() === 'daily') {
+            let dailyDate = new Date()
+            dailyDate = dailyDate.setHours(24,0,0,0)
+            commandCooldowns.create({
+                userId: userID,
+                command: command,
+                expires: dailyDate
+            })
+        }
+        else if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
+            date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
+            commandCooldowns.create({
+                userId: userID,
+                command: command,
+                expires: date
+            })
+        }
+        else {
+            date.setSeconds(date.getSeconds() + timeout)
+            commandCooldowns.create({
+                userId: userID,
+                command: command,
+                expires: date
+            })
+        }
     } else {
-        date.setSeconds(date.getSeconds() + timeout)
-        commandCooldowns.create({
-            userId: userID,
-            command: command,
-            expires: date
-        })
+        if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
+            date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
+            commandCooldowns.create({
+                userId: userID,
+                command: command,
+                expires: date
+            })
+        }
+        else {
+            date.setSeconds(date.getSeconds() + timeout)
+            commandCooldowns.create({
+                userId: userID,
+                command: command,
+                expires: date
+            })
+        }
     }
 }
 

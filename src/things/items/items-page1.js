@@ -6,10 +6,10 @@ module.exports = [
         buyPrice: 1500000,
         tradeValue: 23000,
         emoji: '<:XPCoin:1005438386787582084>',
-        id: 'xp-coin',
+        id: 'xp coin',
         type: 'Power-Up',
         rarity: 'Uncommon',
-        url: 'https://cdn.discordapp.com/attachments/1005428375931867216/1005435815549206639/xpcoin.png',
+        url: 'https://imgur.com/OjgbjtL.png',
         usable: true
     },
     {
@@ -22,7 +22,7 @@ module.exports = [
         id: 'cheque',
         type: 'Power Up',
         rarity: 'Common',
-        url: '',
+        url: 'https://imgur.com/ziHIdlX.png',
         usable: true
     },
     {
@@ -35,7 +35,7 @@ module.exports = [
         id: 'shovel',
         type: 'Tool',
         rarity: 'Common',
-        url: 'https://cdn.discordapp.com/attachments/1005428375931867216/1005429176079237121/shovel.png',
+        url: 'https://imgur.com/kyYulbe.png',
     },
     {
         name: 'Rifle',

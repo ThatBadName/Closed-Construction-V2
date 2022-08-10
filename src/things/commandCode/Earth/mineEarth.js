@@ -6,29 +6,29 @@ const {
     ButtonBuilder
 } = require('discord.js')
 
-async function digAgainOnEarth(interaction) {
+async function mineOnEarth(interaction) {
     let userProfile = await profileSchema.findOne({
         userId: interaction.user.id
     })
     if (!userProfile) userProfile = await profileSchema.create({userId: interaction.user.id})
 
-    const checkForShovel = await invSchema.findOne({
+    const checkForPick = await invSchema.findOne({
         userId: interaction.user.id,
-        itemId: 'shovel'
+        itemId: 'pickaxe'
     })
-    if (!checkForShovel) return interaction.reply({
+    if (!checkForPick) return interaction.reply({
         embeds: [
             new EmbedBuilder()
-            .setTitle('You need a shovel to use this')
+            .setTitle('You need a pickaxe to use this')
             .setColor('0xa744fc')
-            .setDescription('You can buy a shovel from the shop (\`/shop buy item:shovel\`)')
+            .setDescription('You can buy a pick from the shop (\`/shop buy item:pickaxe\`)')
         ],
         components: [
             new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                .setLabel('Dig Again')
-                .setCustomId('dig-again')
+                .setLabel('Mine Again')
+                .setCustomId('mine-again')
                 .setStyle('Secondary')
             )
         ]
@@ -38,19 +38,18 @@ async function digAgainOnEarth(interaction) {
     const willGetRandomItem = Math.round(Math.random() * 25)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
-        'Your shovel hit a rock and shattered into pieces',
-        'Some mole decided to grab your shovel and hide it',
-        'Your hands got sweaty and you dropped your shovel. You got too lazy to pick it up so you went home',
-        'You left your shovel at home and a beaver ate it',
-        'You met Bad in the quary and he took your shovel',
-        'KSchlatt decided to prank you but it went a bit far.. You lost your shovel'
+        `A very hard rock made your pick get stuck`,
+        `Your torch blew out and you lost your pick`,
+        `You snapped the handle off your pick`
     ]
 
     if (willGetRandomItem === 0) {
         const randomItems = [
-            `mayo-dog,<:FunnyDog:1006293232780587178>,Funny Dog`,
-            `tape,<:DuctTape:1006293231476166737>,Tape`,
-            `glue,<:Glue:1006637919873806416>,Glue`
+            `rocks,<:ImageNotFound:1005453599800840262>,Rocks`,
+            `rocks,<:ImageNotFound:1005453599800840262>,Rocks`,
+            `rocks,<:ImageNotFound:1005453599800840262>,Rocks`,
+            `rocks,<:ImageNotFound:1005453599800840262>,Rocks`,
+            `minerals,<:ImageNotFound:1005453599800840262>,Minerals`
         ]
         let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
         const lookupItem = await invSchema.findOne({
@@ -69,29 +68,29 @@ async function digAgainOnEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForPick.amount === 1) checkForPick.delete()
+        else {checkForPick.amount -= 1; checkForPick.save()}
 
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Mine Again')
+                    .setCustomId('mine-again')
                     .setStyle('Secondary')
                 )
             ]
         })
     } else if (willToolBreak === 0) {
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForPick.amount === 1) checkForPick.delete()
+        else {checkForPick.amount -= 1; checkForPick.save()}
 
         interaction.reply({
             embeds: [
@@ -104,8 +103,8 @@ async function digAgainOnEarth(interaction) {
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Mine Again')
+                    .setCustomId('mine-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -119,16 +118,16 @@ async function digAgainOnEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} dug in the ground`)
+                .setTitle(`${interaction.user.tag} went mining`)
                 .setColor('0xa744f2')
-                .setDescription(`You went digging and found \`${amount.toLocaleString()}\` coins`)
+                .setDescription(`You went mining and found \`${amount.toLocaleString()}\` coins`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Mine Again')
+                    .setCustomId('mine-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -137,5 +136,5 @@ async function digAgainOnEarth(interaction) {
 }
 
 module.exports = {
-    digAgainOnEarth
+    mineOnEarth
 }

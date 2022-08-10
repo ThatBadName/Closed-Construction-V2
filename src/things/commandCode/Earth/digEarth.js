@@ -35,7 +35,7 @@ async function digOnEarth(interaction) {
     })
 
     const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
-    const willGetRandomItem = Math.round(Math.random() * 100)
+    const willGetRandomItem = Math.round(Math.random() * 25)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
         'Your shovel hit a rock and shattered into pieces',
@@ -47,19 +47,27 @@ async function digOnEarth(interaction) {
     ]
 
     if (willGetRandomItem === 0) {
-        const lookupFunnyDog = await invSchema.findOne({
+        const randomItems = [
+            `funny dog,<:FunnyDog:1006293232780587178>,Funny Dog`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`
+        ]
+        let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
+        const lookupItem = await invSchema.findOne({
             userId: interaction.user.id,
-            itemId: 'mayo-dog'
+            itemId: itemToGet.split(',')[0]
         })
-        if (!lookupFunnyDog) invSchema.create({
+        if (!lookupItem) invSchema.create({
             userId: interaction.user.id,
-            itemId: 'mayo-dog',
-            item: 'Funny dog',
+            itemId: itemToGet.split(',')[0],
+            item: itemToGet.split(',')[2],
             amount: 1,
-            emoji: '<:FunnyDog:995418957601329222>'
+            emoji: itemToGet.split(',')[1] || '<:ImageNotFound:1005453599800840262>'
         })
-        else lookupFunnyDog.amount += 1;
-        lookupFunnyDog.save()
+        else {
+            lookupItem.amount += 1;
+            lookupItem.save()
+        }
 
         if (checkForShovel.amount === 1) checkForShovel.delete()
         else {checkForShovel.amount -= 1; checkForShovel.save()}
@@ -69,7 +77,7 @@ async function digOnEarth(interaction) {
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`A <:FunnyDog:995418957601329222> Funny Dog bit of the blade of your shovel but you managed to grab the dog by it's collar\n\nYou have been given a <:FunnyDog:995418957601329222> Funny Dog`)
+                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
             ],
             components: [
                 new ActionRowBuilder()
@@ -113,10 +121,7 @@ async function digOnEarth(interaction) {
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} dug in the ground`)
                 .setColor('0xa744f2')
-                .setDescription(`You went digging and found \`${amount}\` coins`)
-                // .setFooter({
-                //     text: `${multi === 0 ? '' : `+${multi} coins (Your multiplier is +${userProfile.coinMulti}%)`}`
-                // })
+                .setDescription(`You went digging and found \`${amount.toLocaleString()}\` coins`)
             ],
             components: [
                 new ActionRowBuilder()

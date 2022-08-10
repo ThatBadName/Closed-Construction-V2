@@ -49,6 +49,31 @@ module.exports = {
                     ],
                     ephemeral: true
                 }).catch(() => {})
+                const canVoteCheck = await profileSchema.findOne({userId: interaction.user.id})
+                if (canVoteCheck && canVoteCheck.canVote === true && canVoteCheck.voteReminders === true) {
+                    interaction.user.send({
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle('You can vote again')
+                            .setDescription('Click [here](https://top.gg/bot/994644001397428335/vote) to vote')
+                            .setFooter({text: 'You can disable this alert with /settings'})
+                            .setColor('a477fc')
+                        ],
+                        components: [
+                            new ActionRowBuilder()
+                            .addComponents(
+                              new ButtonBuilder()
+                              .setStyle('Link')
+                              .setLabel('Vote')
+                              .setURL('https://top.gg/bot/994644001397428335/vote')
+                            )
+                        ],
+                        ephemeral: true
+                    }).catch(() => {})
+
+                    canVoteCheck.canVote = false
+                    canVoteCheck.save()
+                }
             } catch (error) {
                 console.error(error)
                 await interaction.reply({
@@ -516,6 +541,54 @@ module.exports = {
 
                 const command = require('../../things/commandCode/Earth/begAgainEarth')
                 command.begAgainEarth(interaction)
+            } else if (interaction.customId === 'fish-again') {
+                const functions = require('../../commandFunctions')
+                const blks = await functions.blacklistCheck(interaction.user.id, interaction.guild.id, interaction)
+                if (blks === true) return
+                const main = await functions.checkMaintinance(interaction)
+                if (main === true) return
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'fish', 8, interaction)
+                if (cldn === true) return
+                functions.createRecentCommand(interaction.user.id, 'fish', `None`, interaction)
+
+                const command = require('../../things/commandCode/Earth/fishAgainEarth')
+                command.fishAgainEarth(interaction)
+            } else if (interaction.customId === 'mine-again') {
+                const functions = require('../../commandFunctions')
+                const blks = await functions.blacklistCheck(interaction.user.id, interaction.guild.id, interaction)
+                if (blks === true) return
+                const main = await functions.checkMaintinance(interaction)
+                if (main === true) return
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'mine', 8, interaction)
+                if (cldn === true) return
+                functions.createRecentCommand(interaction.user.id, 'mine', `None`, interaction)
+
+                const command = require('../../things/commandCode/Earth/mineAgainEarth')
+                command.mineAgainEarth(interaction)
+            } else if (interaction.customId === 'forage-again') {
+                const functions = require('../../commandFunctions')
+                const blks = await functions.blacklistCheck(interaction.user.id, interaction.guild.id, interaction)
+                if (blks === true) return
+                const main = await functions.checkMaintinance(interaction)
+                if (main === true) return
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'forage', 8, interaction)
+                if (cldn === true) return
+                functions.createRecentCommand(interaction.user.id, 'forage', `None`, interaction)
+
+                const command = require('../../things/commandCode/Earth/forageAgainEarth')
+                command.forageAgainEarth(interaction)
+            } else if (interaction.customId === 'hunt-again') {
+                const functions = require('../../commandFunctions')
+                const blks = await functions.blacklistCheck(interaction.user.id, interaction.guild.id, interaction)
+                if (blks === true) return
+                const main = await functions.checkMaintinance(interaction)
+                if (main === true) return
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'hunt', 8, interaction)
+                if (cldn === true) return
+                functions.createRecentCommand(interaction.user.id, 'hunt', `None`, interaction)
+
+                const command = require('../../things/commandCode/Earth/huntAgainEarth')
+                command.huntAgainEarth(interaction)
             } else if (interaction.customId === 'mark-as-read') {
                 interaction.reply({
                     embeds: [

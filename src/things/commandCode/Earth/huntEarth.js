@@ -6,29 +6,50 @@ const {
     ButtonBuilder
 } = require('discord.js')
 
-async function digAgainOnEarth(interaction) {
+async function huntOnEarth(interaction) {
     let userProfile = await profileSchema.findOne({
         userId: interaction.user.id
     })
     if (!userProfile) userProfile = await profileSchema.create({userId: interaction.user.id})
 
-    const checkForShovel = await invSchema.findOne({
+    const checkForPick = await invSchema.findOne({
         userId: interaction.user.id,
-        itemId: 'shovel'
+        itemId: 'rifle'
     })
-    if (!checkForShovel) return interaction.reply({
+    const checkForAmmo = await invSchema.findOne({
+        userId: interaction.user.id,
+        itemId: 'ammo'
+    })
+    if (!checkForPick) return interaction.reply({
         embeds: [
             new EmbedBuilder()
-            .setTitle('You need a shovel to use this')
+            .setTitle('You need a rifle to use this')
             .setColor('0xa744fc')
-            .setDescription('You can buy a shovel from the shop (\`/shop buy item:shovel\`)')
+            .setDescription('You can buy a rifle from the shop (\`/shop buy item:rifle\`)')
         ],
         components: [
             new ActionRowBuilder()
             .addComponents(
                 new ButtonBuilder()
-                .setLabel('Dig Again')
-                .setCustomId('dig-again')
+                .setLabel('Hunt Again')
+                .setCustomId('hunt-again')
+                .setStyle('Secondary')
+            )
+        ]
+    })
+    if (!checkForAmmo) return interaction.reply({
+        embeds: [
+            new EmbedBuilder()
+            .setTitle('You do not have any ammo')
+            .setColor('0xa744fc')
+            .setDescription('You can buy ammo from the shop (\`/shop buy item:ammo\`)')
+        ],
+        components: [
+            new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                .setLabel('Hunt Again')
+                .setCustomId('hunt-again')
                 .setStyle('Secondary')
             )
         ]
@@ -38,19 +59,20 @@ async function digAgainOnEarth(interaction) {
     const willGetRandomItem = Math.round(Math.random() * 25)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
-        'Your shovel hit a rock and shattered into pieces',
-        'Some mole decided to grab your shovel and hide it',
-        'Your hands got sweaty and you dropped your shovel. You got too lazy to pick it up so you went home',
-        'You left your shovel at home and a beaver ate it',
-        'You met Bad in the quary and he took your shovel',
-        'KSchlatt decided to prank you but it went a bit far.. You lost your shovel'
+        `Your rifle got jammed and you threw it agains a rock in fustration`,
+        `Your rifle decided that it would no longer work`,
+        `You dropped your rifle down a very big hole. Not sure it's possible to get it back`,
+        `A bear stole your rifle off you`,
+        `You were so bad at aiming you smashed your rifle against a rock`
     ]
 
     if (willGetRandomItem === 0) {
         const randomItems = [
-            `mayo-dog,<:FunnyDog:1006293232780587178>,Funny Dog`,
-            `tape,<:DuctTape:1006293231476166737>,Tape`,
-            `glue,<:Glue:1006637919873806416>,Glue`
+            `scout,<:Scout:1005521226887864480>,Scout`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
         ]
         let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
         const lookupItem = await invSchema.findOne({
@@ -69,29 +91,29 @@ async function digAgainOnEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForPick.amount === 1) checkForPick.delete()
+        else {checkForPick.amount -= 1; checkForPick.save()}
 
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while hunting. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Hunt Again')
+                    .setCustomId('hunt-again')
                     .setStyle('Secondary')
                 )
             ]
         })
     } else if (willToolBreak === 0) {
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
+        if (checkForPick.amount === 1) checkForPick.delete()
+        else {checkForPick.amount -= 1; checkForPick.save()}
 
         interaction.reply({
             embeds: [
@@ -104,8 +126,8 @@ async function digAgainOnEarth(interaction) {
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Hunt Again')
+                    .setCustomId('hunt-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -116,19 +138,22 @@ async function digAgainOnEarth(interaction) {
         userProfile.wallet += amount
         userProfile.save()
 
+        if (checkForAmmo.amount === 1) checkForAmmo.delete()
+        else {checkForAmmo.amount -= 1; checkForAmmo.save()}
+
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} dug in the ground`)
+                .setTitle(`${interaction.user.tag} went hunting`)
                 .setColor('0xa744f2')
-                .setDescription(`You went digging and found \`${amount.toLocaleString()}\` coins`)
+                .setDescription(`You went hunting and found \`${amount.toLocaleString()}\` coins`)
             ],
             components: [
                 new ActionRowBuilder()
                 .addComponents(
                     new ButtonBuilder()
-                    .setLabel('Dig Again')
-                    .setCustomId('dig-again')
+                    .setLabel('Hunt Again')
+                    .setCustomId('hunt-again')
                     .setStyle('Secondary')
                 )
             ]
@@ -137,5 +162,5 @@ async function digAgainOnEarth(interaction) {
 }
 
 module.exports = {
-    digAgainOnEarth
+    huntOnEarth
 }

@@ -55,7 +55,7 @@ module.exports = {
                     size: 1024
                 }))
                 .setTitle(`${userToView.username}'s profile`)
-                .setDescription(`**Bio:** ${profile.bio}\n**Badges:** ${invItems.length === 0 ? 'None' : invItems}\n**Rank**: ${profile.developer === true ? '<:developer:995407005864955924> Developer' : `${profile.botAdmin === true ? '<:botAdmin:996186649191002192> Bot Admin' : `${profile.botModerator === true ? '<:botModerator:996136262064939098> Bot Moderator' : 'Regular'}`}`}\n${profile.job !== '' ? `Works as a \`${profile.job}\`` : ''}`)
+                .setDescription(`**Bio:** ${profile.bio}\n**Badges:** ${invItems.length === 0 ? 'None' : invItems}\n**Rank**: ${profile.developer === true ? '<:DeveloperBadge:1006817283550761051> Developer' : `${profile.botAdmin === true ? '<:AdminBadge:1006817282061762570> Bot Admin' : `${profile.botModerator === true ? '<:ModeratorBadge:1006817284846792765> Bot Moderator' : 'Regular'}`}`}\n${profile.job !== '' ? `Works as a \`${profile.job}\`` : ''}`)
                 .setFields({
                     name: 'Level',
                     value: `Bot Level: \`${profile.level}\`\nPlanet Level: \`${profile.planetLevel}\``,

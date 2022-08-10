@@ -1,5 +1,11 @@
 const mongoose = require('mongoose')
-const { mongoUri } = require('../../../config.json')
+const {
+    mongoUri
+} = require('../../../config.json')
+const {
+    ActivityType
+} = require('discord.js')
+const profileSchema = require('../../models/userProfile')
 
 module.exports = {
     name: 'ready',
@@ -7,113 +13,61 @@ module.exports = {
 
     async execute(client) {
         console.log(`[Startup] ${client.user.username} is online`)
-        mongoose.connect(mongoUri, { keepAlive: true }).then(console.log(`[Startup] ${client.user.username} has connected to mongo`))
+        mongoose.connect(mongoUri, {
+            keepAlive: true
+        }).then(console.log(`[Startup] ${client.user.username} has connected to mongo`))
 
-        const check = async () => {
-            const rng = Math.floor(Math.random() * 10)
-            if (rng === 0) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'Breaking Bad',
-                        url: 'https://twitch.tv/schlattk',
-                        type: 'STREAMING'
-                    }],
-                    status: 'idle'
-                })
-            }
-            if (rng === 1) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'Away from my job of being a bot',
-                        type: 'PLAYING'
-                    }],
-                    status: 'idle'
-                })
-            }
-            if (rng === 2) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'The Devs',
-                        type: 'WATCHING'
-                    }],
-                    status: 'dnd'
-                })
-            }
-            if (rng === 3) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'KSchlatt',
-                        type: 'WATCHING'
-                    }],
-                    status: 'online'
-                })
-            }
-            if (rng === 4) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'ThatBadName',
-                        type: 'WATCHING'
-                    }],
-                    status: 'dnd'
-                })
-            }
-            if (rng === 5) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'for abuse',
-                        type: 'WATCHING'
-                    }],
-                    status: 'dnd'
-                })
-            }
-            if (rng === 6) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'Logging',
-                        type: 'Playing'
-                    }],
-                    status: 'idle'
-                })
-            }
-            if (rng === 7) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'the world burn',
-                        type: 'WATCHING'
-                    }],
-                    status: 'dnd'
-                })
-            }
-            if (rng === 8) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'the devs',
-                        type: 'LISTENING'
-                    }],
-                    status: 'Online'
-                })
-            }
-            if (rng === 9) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'Fix The Server',
-                        type: 'PLAYING'
-                    }],
-                    status: 'idle'
-                })
-            }
-            if (rng === 10) {
-                client.user.setPresence({
-                    activities: [{
-                        name: 'Cheese Cake',
-                        type: 'PLAYING'
-                    }],
-                    status: 'idle'
-                })
-            }
-    
-            setTimeout(check, 1000 * 60)
+        let current = 'user'
+        const rotate = async () => {
+            if (current === 'user') updateStatusHelp()
+            else if (current === 'server') updateStatusUser()
+            else if (current === 'help') updateStatusRegistered()
+            else if (current === 'registered') updateStatusServer()
+
+            setTimeout(rotate, 60000)
         }
-        check()
+        rotate()
+
+        function updateStatusServer() {
+            client.user.setPresence({
+                activities: [{
+                    name: `${client.guilds.cache.size.toLocaleString()} servers`,
+                    type: ActivityType.Watching
+                }],
+                status: 'dnd',
+            })
+            current = 'server'
+        }
+        function updateStatusUser() {
+            client.user.setPresence({
+                activities: [{
+                    name: `${client.guilds.cache.reduce((a, g) => a + g.memberCount, 0).toLocaleString()} users`,
+                    type: ActivityType.Watching
+                }],
+                status: 'dnd',
+            })
+            current = 'user'
+        }
+        function updateStatusHelp() {
+            client.user.setPresence({
+                activities: [{
+                    name: `/help`,
+                    type: ActivityType.Playing
+                }],
+                status: 'dnd',
+            })
+            current = 'help'
+        }
+        async function updateStatusRegistered() {
+            const registeredUsers = await profileSchema.find()
+            client.user.setPresence({
+                activities: [{
+                    name: `${registeredUsers.length.toLocaleString()} registered users`,
+                    type: ActivityType.Listening
+                }],
+                status: 'dnd',
+            })
+            current = 'registered'
+        }
     }
 }

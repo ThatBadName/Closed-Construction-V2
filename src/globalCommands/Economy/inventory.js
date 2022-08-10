@@ -87,7 +87,7 @@ module.exports = {
         })
 
         const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
-            componentType: 'Button',
+            type: 'Button',
             time: 30000
         })
 
