@@ -35,7 +35,7 @@ async function mineAgainEarth(interaction) {
     })
 
     const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
-    const willGetRandomItem = Math.round(Math.random() * 25)
+    const willGetRandomItem = Math.round(Math.random() * 5)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
         `A very hard rock made your pick get stuck`,
@@ -68,15 +68,12 @@ async function mineAgainEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForPick.amount === 1) checkForPick.delete()
-        else {checkForPick.amount -= 1; checkForPick.save()}
-
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining.`)
             ],
             components: [
                 new ActionRowBuilder()

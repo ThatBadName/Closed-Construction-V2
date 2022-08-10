@@ -35,7 +35,7 @@ async function digAgainOnEarth(interaction) {
     })
 
     const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
-    const willGetRandomItem = Math.round(Math.random() * 25)
+    const willGetRandomItem = Math.round(Math.random() * 5)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
         'Your shovel hit a rock and shattered into pieces',
@@ -69,15 +69,12 @@ async function digAgainOnEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForShovel.amount === 1) checkForShovel.delete()
-        else {checkForShovel.amount -= 1; checkForShovel.save()}
-
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging.`)
             ],
             components: [
                 new ActionRowBuilder()

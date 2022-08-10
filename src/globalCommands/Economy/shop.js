@@ -4,7 +4,7 @@ const {
     ButtonBuilder,
     SlashCommandBuilder
 } = require('discord.js')
-const items = require('../../things/items/allItems')
+let items = require('../../things/items/allItems')
 const profileSchema = require('../../models/userProfile')
 const invSchema = require('../../models/inventorySchema')
 const items1 = require('../../things/items/items-page1')
@@ -12,7 +12,6 @@ const items2 = require('../../things/items/items-page2')
 const items3 = require('../../things/items/items-page3')
 const items4 = require('../../things/items/items-page4')
 const items5 = require('../../things/items/items-page5')
-const allItems = require('../../things/items/allItems')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,7 +28,7 @@ module.exports = {
         .setDescription('Buy an item')
         
         .addStringOption(option =>
-            option.setName('item')
+            option.setName('buy-item')
             .setDescription('The item you want to buy')
             .setMaxLength(25)
             .setMinLength(1)
@@ -38,7 +37,7 @@ module.exports = {
         )
 
         .addIntegerOption(option =>
-            option.setName('amount')
+            option.setName('quantity')
             .setDescription('The amount of the item to buy')
             .setRequired(false)
             .setMinValue(1)
@@ -51,7 +50,7 @@ module.exports = {
         .setDescription('Sell an item')
         
         .addStringOption(option =>
-            option.setName('item')
+            option.setName('sell-item')
             .setDescription('The ID of the item you want to sell')
             .setMaxLength(25)
             .setMinLength(1)
@@ -60,7 +59,7 @@ module.exports = {
         )
 
         .addIntegerOption(option =>
-            option.setName('amount')
+            option.setName('quantity')
             .setDescription('The amount of the item to sell')
             .setRequired(false)
             .setMinValue(1)
@@ -71,7 +70,21 @@ module.exports = {
     async autocomplete(interaction) {
         const focusedOption = interaction.options.getFocused(true)
 
-        if (focusedOption.name === 'item') {
+        if (focusedOption.name === 'buy-item') {
+            items = items.filter(item => item.buyPrice > 0)
+            const focusedValue = interaction.options.getFocused()
+            const choices = items.map(i => `${i.name},${i.id}`).sort()
+            const filtered = choices.filter((choice) =>
+                choice.includes(focusedValue)
+            ).slice(0, 25)
+            await interaction.respond(
+                filtered.map((choice) => ({
+                    name: choice.split(',')[0],
+                    value: choice.split(',')[1]
+                }))
+            )
+        } else if (focusedOption.name === 'sell-item') {
+            items = items.filter(item => item.sellPrice > 0)
             const focusedValue = interaction.options.getFocused()
             const choices = items.map(i => `${i.name},${i.id}`).sort()
             const filtered = choices.filter((choice) =>
@@ -273,7 +286,7 @@ module.exports = {
         } else if (interaction.options.getSubcommand() === 'buy') {
             let itemQuery = interaction.options.getString('item')
             itemQuery = itemQuery.toLowerCase()
-            let amount = interaction.options.getInteger('amount') || 1
+            let amount = interaction.options.getInteger('quantity') || 1
             if (amount < 1) amount = 1
 
             functions.createRecentCommand(interaction.user.id, 'shop-buy', `ITEM: ${itemQuery} | AMOUNT: ${amount}`, interaction)
@@ -377,7 +390,7 @@ module.exports = {
         } else if (interaction.options.getSubcommand() === 'sell') {
             let itemQuery = interaction.options.getString('item')
             itemQuery = itemQuery.toLowerCase()
-            let amount = interaction.options.getInteger('amount') || 1
+            let amount = interaction.options.getInteger('quantity') || 1
             if (amount < 1) amount = 1
 
             functions.createRecentCommand(interaction.user.id, 'shop-sell', `ITEM: ${itemQuery.toLocaleString()} | AMOUNT: ${amount.toLocaleString()}`, interaction)

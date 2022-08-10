@@ -35,7 +35,7 @@ async function forageOnEarth(interaction) {
     })
 
     const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
-    const willGetRandomItem = Math.round(Math.random() * 25)
+    const willGetRandomItem = Math.round(Math.random() * 5)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
         `A wolf came and stole your axe`,
@@ -75,15 +75,12 @@ async function forageOnEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForAxe.amount === 1) checkForAxe.delete()
-        else {checkForAxe.amount -= 1; checkForAxe.save()}
-
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining.`)
             ],
             components: [
                 new ActionRowBuilder()

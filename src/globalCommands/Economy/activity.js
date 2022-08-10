@@ -37,51 +37,31 @@ module.exports = {
         const main = await functions.checkMaintinance(interaction)
         if (main === true) return
 
-        if (interaction.options.getSubcommand() === 'fish') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'fish', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'fish', `None`, interaction)
+        const cldn = await functions.cooldownCheck(interaction.user.id, interaction.options.getSubcommand(), 8, interaction)
+        if (cldn === true) return
+        functions.createRecentCommand(interaction.user.id, interaction.options.getSubcommand(), `None`, interaction)
 
+        if (interaction.options.getSubcommand() === 'fish') {
             const command = require('../../things/commandCode/Earth/fishEarth')
             command.fishOnEarth(interaction)
 
         } else if (interaction.options.getSubcommand() === 'dig') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'dig', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'dig', `None`, interaction)
-
             const command = require('../../things/commandCode/Earth/digEarth')
             command.digOnEarth(interaction)
 
         } else if (interaction.options.getSubcommand() === 'mine') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'mine', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'mine', `None`, interaction)
-
             const command = require('../../things/commandCode/Earth/mineEarth')
             command.mineOnEarth(interaction)
 
         } else if (interaction.options.getSubcommand() === 'beg') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'beg', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'beg', `None`, interaction)
-
             const command = require('../../things/commandCode/Earth/begEarth')
             command.begOnEarth(interaction)
 
         } else if (interaction.options.getSubcommand() === 'forage') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'forage', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'forage', `None`, interaction)
-
             const command = require('../../things/commandCode/Earth/forageEarth')
             command.forageOnEarth(interaction)
 
         } else if (interaction.options.getSubcommand() === 'hunt') {
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'hunt', 8, interaction)
-            if (cldn === true) return
-            functions.createRecentCommand(interaction.user.id, 'hunt', `None`, interaction)
-
             const command = require('../../things/commandCode/Earth/huntEarth')
             command.huntOnEarth(interaction)
 

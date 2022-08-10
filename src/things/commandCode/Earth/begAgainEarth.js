@@ -12,8 +12,8 @@ async function begAgainEarth(interaction) {
     })
     if (!userProfile) userProfile = await profileSchema.create({userId: interaction.user.id})
     const randomCoins = Math.round(Math.random() * (2000 - 1) + 1)
-    const willGetRandomItem = Math.round(Math.random() * 250)
-    const willGetDevCoin = Math.round(Math.random() * 100)
+    const willGetRandomItem = Math.round(Math.random() * 100)
+    const willGetDevCoin = Math.round(Math.random() * 20)
     if (willGetDevCoin === 0){
         const lookupDevCoin = await invSchema.findOne({
             userId: interaction.user.id,

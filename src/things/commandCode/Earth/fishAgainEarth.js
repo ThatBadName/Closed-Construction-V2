@@ -35,7 +35,7 @@ async function fishAgainEarth(interaction) {
     })
 
     const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
-    const willGetRandomItem = Math.round(Math.random() * 25)
+    const willGetRandomItem = Math.round(Math.random() * 5)
     const willToolBreak = Math.round(Math.random() * 10)
     const reasonsToBreak = [
         `A fish ate your bait, and the fishing wire, and the rod. HOW????`,
@@ -73,15 +73,12 @@ async function fishAgainEarth(interaction) {
             lookupItem.save()
         }
 
-        if (checkForRod.amount === 1) checkForRod.delete()
-        else {checkForRod.amount -= 1; checkForRod.save()}
-
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle(`${interaction.user.tag} Uhhh something happened`)
                 .setColor('0xa744fc')
-                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while fishing. Bad news though, ${reasonsToBreak[Math.floor(Math.random() * reasonsToBreak.length)]}`)
+                .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while fishing.`)
             ],
             components: [
                 new ActionRowBuilder()
