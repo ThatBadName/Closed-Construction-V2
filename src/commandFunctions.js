@@ -253,6 +253,7 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
+                .setFooter({text: `Closed Construction`})
             ]
         })
     }
@@ -289,6 +290,7 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
+                .setFooter({text: `Closed Construction`})
             ]
         })
     }
@@ -326,6 +328,7 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
+                .setFooter({text: `Closed Construction`})
             ]
         })
         webhookStaff.send({
@@ -350,6 +353,7 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
+                .setFooter({text: `Closed Construction`})
             ]
         })
     }

@@ -70,21 +70,31 @@ module.exports = {
         })
         const invEmbeds = await functions.genInventoryPages(searchResults)
 
+        let firstEmbed
         if (invEmbeds.length === 1) {
-            pageButtons.components[2].setDisabled(true)
-            pageButtons.components[3].setDisabled(true)
-        }
-        const firstEmbed = await wait.edit({
-            embeds: [invEmbeds[0]],
-            components: [pageButtons],
-            content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
-            fetchReply: true
-        }).catch(() => {
-            return wait.edit({
-                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle(`${user.tag}'s inventory is empty`)],
+            firstEmbed = await wait.edit({
+                embeds: [invEmbeds[0]],
+                components: [],
                 fetchReply: true
+            }).catch(() => {
+                return wait.edit({
+                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle(`${user.tag}'s inventory is empty`)],
+                    fetchReply: true
+                })
             })
-        })
+        } else {
+            firstEmbed = await wait.edit({
+                embeds: [invEmbeds[0]],
+                components: [pageButtons],
+                content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
+                fetchReply: true
+            }).catch(() => {
+                return wait.edit({
+                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle(`${user.tag}'s inventory is empty`)],
+                    fetchReply: true
+                })
+            })
+        }
 
         const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
             type: 'Button',

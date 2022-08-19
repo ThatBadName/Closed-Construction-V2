@@ -8,18 +8,18 @@ module.exports = {
     .setDescription('Need some help?'),
         
     async execute(interaction, client) {
-        let economyCommandStr = []
-        const economyCommandFiles = fs.readdirSync('./src/globalCommands/Economy/').filter(file => file.endsWith('js'))
-        for (const file of economyCommandFiles) {
-            const command = require(`../Economy/${file}`)
-            economyCommandStr.push(`\`${command.data.name}\``)
-        }
-
         let contextCommandStr = []
         const contextCommandFiles = fs.readdirSync('./src/globalCommands/ContextMenu/').filter(file => file.endsWith('js'))
         for (const file of contextCommandFiles) {
             const command = require(`../ContextMenu/${file}`)
             contextCommandStr.push(`\`${command.data.name}\``)
+        }
+
+        let economyCommandStr = []
+        const economyCommandFiles = fs.readdirSync('./src/globalCommands/Economy/').filter(file => file.endsWith('js'))
+        for (const file of economyCommandFiles) {
+            const command = require(`../Economy/${file}`)
+            economyCommandStr.push(`\`${command.data.name}\``)
         }
 
         let miscCommandStr = []
@@ -36,16 +36,16 @@ module.exports = {
                 .setTitle('Command List')
                 .setColor('0xa477fc')
                 .setFields({
-                    name: 'Economy Commands',
-                    value: `${economyCommandStr.join(', ')}`,
+                    name: 'Context Commands',
+                    value: `${contextCommandStr.join(', ') || 'No commands'}`,
                     inline: false
                 }, {
-                    name: 'Context Commands',
-                    value: `${contextCommandStr.join(', ')}`,
+                    name: 'Economy Commands',
+                    value: `${economyCommandStr.join(', ') || 'No commands'}`,
                     inline: false
                 }, {
                     name: 'Misc Commands',
-                    value: `${miscCommandStr.join(', ')}`,
+                    value: `${miscCommandStr.join(', ') || 'No commands'}`,
                     inline: false
                 })
             ],

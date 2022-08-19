@@ -79,7 +79,7 @@ module.exports = [{
     {
         name: 'Dev Coin',
         description: 'A coin from the devs. Why not use it?',
-        sellPrice: 1,
+        sellPrice: 0,
         buyPrice: 0,
         tradeValue: 1000000,
         emoji: '<:DeveloperCoin:1005438384765947904>',
@@ -104,7 +104,7 @@ module.exports = [{
     },
     {
         name: 'Scout',
-        description: 'A simple image of scout', //Found while hunting
+        description: 'A simple image of scout',
         sellPrice: 3000000,
         buyPrice: 0,
         tradeValue: 2500000,

@@ -284,7 +284,7 @@ module.exports = {
             })
 
         } else if (interaction.options.getSubcommand() === 'buy') {
-            let itemQuery = interaction.options.getString('item')
+            let itemQuery = interaction.options.getString('buy-item')
             itemQuery = itemQuery.toLowerCase()
             let amount = interaction.options.getInteger('quantity') || 1
             if (amount < 1) amount = 1
@@ -388,7 +388,7 @@ module.exports = {
                 })
             }
         } else if (interaction.options.getSubcommand() === 'sell') {
-            let itemQuery = interaction.options.getString('item')
+            let itemQuery = interaction.options.getString('sell-item')
             itemQuery = itemQuery.toLowerCase()
             let amount = interaction.options.getInteger('quantity') || 1
             if (amount < 1) amount = 1

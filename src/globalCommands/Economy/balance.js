@@ -212,7 +212,7 @@ module.exports = {
                         new EmbedBuilder()
                         .setTitle(`${interaction.user.username}'s balance`)
                         .setColor('0xa744f2')
-                        .setDescription(`**Wallet**: \`${result.wallet.toLocaleString()}\` coins\n**Bank**: \`${result.bank.toLocaleString()}\` coins`)
+                        .setDescription(`**Wallet**: \`${result.wallet.toLocaleString()}\` coins\n**Bank**: \`${result.bank.toLocaleString()}/${result.maxBank.toLocaleString()}\` (${Math.round(result.bank / result.maxBank * 100)}% full) coins`)
                     ]
                 })
             }

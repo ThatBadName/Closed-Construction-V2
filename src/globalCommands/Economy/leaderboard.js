@@ -9,9 +9,9 @@ const profileSchema = require('../../models/userProfile')
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('leaderboard')
-    .setDMPermission(false)
-    .setDescription('View the leaderboard'),
+        .setName('leaderboard')
+        .setDMPermission(false)
+        .setDescription('View the leaderboard'),
 
     async execute(
         interaction
@@ -24,13 +24,33 @@ module.exports = {
         if (cldn === true) return
         functions.createRecentCommand(interaction.user.id, 'leaderboard', `None`, interaction)
 
-        let textWallet = ''
+        const wait = await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                .setTitle('Please Wait')
+                .setDescription('This may take a while depending on the size of your server')
+                .setColor('0xa477fc')
+            ],
+            fetchReply: true
+        })
+
+        let textWalletGlobal = ''
         const resultsWallet = await profileSchema.find().sort({
             wallet: -1
         }).limit(15)
 
-        let textBank = ''
+        let textBankGlobal = ''
         const resultsBank = await profileSchema.find().sort({
+            bank: -1
+        }).limit(15)
+
+        let textWalletServer = ''
+        const resultsWalletServer = await profileSchema.find().sort({
+            wallet: -1
+        })
+
+        let textBankServer = ''
+        const resultsBankServer = await profileSchema.find().sort({
             bank: -1
         }).limit(15)
 
@@ -40,7 +60,7 @@ module.exports = {
                 wallet = 0
             } = resultsWallet[counter]
 
-            textWallet += `**#${counter + 1}** <@${userId}> - \`${wallet.toLocaleString()}\` coins\n`
+            textWalletGlobal += `**#${counter + 1}** <@${userId}> - \`${wallet.toLocaleString()}\` coins\n`
         }
         for (let counter = 0; counter < resultsBank.length; ++counter) {
             const {
@@ -48,27 +68,61 @@ module.exports = {
                 bank = 0
             } = resultsBank[counter]
 
-            textBank += `**#${counter + 1}** <@${userId}> - \`${bank.toLocaleString()}\` coins\n`
+            textBankGlobal += `**#${counter + 1}** <@${userId}> - \`${bank.toLocaleString()}\` coins\n`
+        }
+        let memberCounterWallet = 0
+        for (let counter = 0; counter < 15; ++counter) {
+            const {
+                userId,
+                wallet = 0
+            } = resultsWalletServer[counter]
+            const user = await interaction.guild.members.fetch(userId).catch(() => {})
+            if (user) {
+                textWalletServer += `**#${memberCounterWallet + 1}** <@${userId}> - \`${wallet.toLocaleString()}\` coins\n`
+                ++memberCounterWallet
+            }
+        }
+        let memberCounterBank = 0
+        for (let counter = 0; counter < 15; ++counter) {
+            const {
+                userId,
+                bank = 0
+            } = resultsBankServer[counter]
+            const user = await interaction.guild.members.fetch(userId).catch(() => {})
+            if (user) {
+                textBankServer += `**#${memberCounterBank + 1}** <@${userId}> - \`${bank.toLocaleString()}\` coins\n`
+                ++memberCounterBank
+            }
         }
 
         const lbEmbedWallet = new EmbedBuilder()
-            .setTitle('Balance Leaderboard')
+            .setTitle('Global Wallet Leaderboard')
             .setColor('0xa744f2')
-            .setFooter({
-                text: 'This is calculated off of wallets only'
-            })
-            .setDescription(textWallet)
+            .setDescription(textWalletGlobal || 'No users here yet')
 
         const lbEmbedBank = new EmbedBuilder()
-            .setTitle('Balance Leaderboard')
+            .setTitle('Global Bank Leaderboard')
             .setColor('0xa744f2')
-            .setFooter({
-                text: 'This is calculated off of banks only'
-            })
-            .setDescription(textBank)
+            .setDescription(textBankGlobal || 'No users here yet')
 
-        const buttons = new ActionRowBuilder()
+        const lbEmbedWalletGuild = new EmbedBuilder()
+            .setTitle('Server Wallet Leaderboard')
+            .setColor('0xa744f2')
+            .setDescription(textWalletServer || 'No users here yet')
+
+        const lbEmbedBankGuild = new EmbedBuilder()
+            .setTitle('Server Bank Leaderboard')
+            .setColor('0xa744f2')
+            .setDescription(textBankServer || 'No users here yet')
+
+        const buttonsGlobal = new ActionRowBuilder()
             .addComponents(
+                new ButtonBuilder()
+                .setCustomId('Global')
+                .setDisabled(true)
+                .setLabel('Global:')
+                .setStyle('Primary'),
+
                 new ButtonBuilder()
                 .setCustomId('wallet-page')
                 .setLabel('Wallet Leaderboard')
@@ -82,9 +136,30 @@ module.exports = {
                 .setDisabled(false)
             )
 
-        const leaderboardMessage = await interaction.reply({
+        const buttonsGuild = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                .setCustomId('Server')
+                .setDisabled(true)
+                .setLabel('Server:')
+                .setStyle('Primary'),
+
+                new ButtonBuilder()
+                .setCustomId('wallet-page-server')
+                .setLabel('Wallet Leaderboard')
+                .setStyle('Secondary')
+                .setDisabled(false),
+
+                new ButtonBuilder()
+                .setCustomId('bank-page-server')
+                .setLabel('Bank Leaderboard')
+                .setStyle('Secondary')
+                .setDisabled(false)
+            )
+
+        const leaderboardMessage = await wait.edit({
             embeds: [lbEmbedWallet],
-            components: [buttons],
+            components: [buttonsGlobal, buttonsGuild],
             fetchReply: true
         })
 
@@ -105,20 +180,46 @@ module.exports = {
                 })
 
             if (i.customId === 'wallet-page') {
-                buttons.components[0].setDisabled(true)
-                buttons.components[1].setDisabled(false)
+                buttonsGlobal.components[1].setDisabled(true)
+                buttonsGlobal.components[2].setDisabled(false)
+                buttonsGuild.components[1].setDisabled(false)
+                buttonsGuild.components[2].setDisabled(false)
                 leaderboardMessage.edit({
                     embeds: [lbEmbedWallet],
-                    components: [buttons]
+                    components: [buttonsGlobal, buttonsGuild]
                 })
                 i.deferUpdate()
                 collector.resetTimer()
             } else if (i.customId === 'bank-page') {
-                buttons.components[0].setDisabled(false)
-                buttons.components[1].setDisabled(true)
+                buttonsGlobal.components[1].setDisabled(false)
+                buttonsGlobal.components[2].setDisabled(true)
+                buttonsGuild.components[1].setDisabled(false)
+                buttonsGuild.components[2].setDisabled(false)
                 leaderboardMessage.edit({
                     embeds: [lbEmbedBank],
-                    components: [buttons]
+                    components: [buttonsGlobal, buttonsGuild]
+                })
+                i.deferUpdate()
+                collector.resetTimer()
+            } else if (i.customId === 'wallet-page-server') {
+                buttonsGlobal.components[1].setDisabled(false)
+                buttonsGlobal.components[2].setDisabled(false)
+                buttonsGuild.components[1].setDisabled(true)
+                buttonsGuild.components[2].setDisabled(false)
+                leaderboardMessage.edit({
+                    embeds: [lbEmbedWalletGuild],
+                    components: [buttonsGlobal, buttonsGuild]
+                })
+                i.deferUpdate()
+                collector.resetTimer()
+            } else if (i.customId === 'bank-page-server') {
+                buttonsGlobal.components[1].setDisabled(false)
+                buttonsGlobal.components[2].setDisabled(false)
+                buttonsGuild.components[1].setDisabled(false)
+                buttonsGuild.components[2].setDisabled(true)
+                leaderboardMessage.edit({
+                    embeds: [lbEmbedBankGuild],
+                    components: [buttonsGlobal, buttonsGuild]
                 })
                 i.deferUpdate()
                 collector.resetTimer()
@@ -126,10 +227,12 @@ module.exports = {
         })
 
         collector.on('end', () => {
-            buttons.components[0].setDisabled(true)
-            buttons.components[1].setDisabled(true)
+            buttonsGlobal.components[1].setDisabled(true)
+            buttonsGlobal.components[2].setDisabled(true)
+            buttonsGuild.components[1].setDisabled(true)
+            buttonsGuild.components[2].setDisabled(true)
             leaderboardMessage.edit({
-                components: [buttons]
+                components: [buttonsGlobal, buttonsGuild]
             })
         })
 
