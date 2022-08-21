@@ -94,6 +94,7 @@ module.exports = {
         })
 
         if (amount > userInv.amount) amount = userInv.amount
+        if (itemFound.id === 'berries') amount = 1
         if (itemFound.id !== 'dev-coin' && itemFound.id !== 'scout') {
             if (amount === userInv.amount) userInv.delete()
             else userInv.amount -= amount;
@@ -215,7 +216,8 @@ module.exports = {
 
                 break
                 case "berries":
-                    if (Math.round(Math.random() * (2 - 1) + 1) === 1) {
+                    const rng = Math.round(Math.random() * (2 - 1) + 1)
+                    if (rng === 1) {
                         const randomGood = Math.round(Math.round() * (3 - 1) + 1)
                         if (randomGood === 1) {
                             const amountAdding = Math.round(Math.random() * (50 - 10) + 10)

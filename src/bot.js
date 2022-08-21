@@ -140,15 +140,35 @@ const inventorySchema = require('./models/inventorySchema')
 const {
   EmbedBuilder,
   ActionRowBuilder,
-  ButtonBuilder
+  ButtonBuilder,
+  WebhookClient
 } = require('discord.js')
 
 const app = express()
 
 const webhook = new Topgg.Webhook("ClosedConstruction")
+const webhookVoter = new WebhookClient({url: 'https://discord.com/api/webhooks/1005529556318441482/edN5A8FXmzVsCEhg6H4TCq8kT2X3tkdL6u8v-vnRbJ8Z8ETKNY3_fOUlX8RAAtnkljX4'})
 
 app.post("/dblwebhook", webhook.listener(async (vote) => {
   const member = await client.users.fetch(vote.user)
+  webhookVoter.send({
+    embeds: [
+      new EmbedBuilder()
+      .setTitle('Thanks for voting!')
+      .setDescription(`<@${vote.user}> (\`${vote.user}\`) has just voted on Top.gg!`)
+      .setColor('0xa477fc')
+    ],
+    components: [
+      new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+        .setStyle('Link')
+        .setLabel('Vote on Top.gg')
+        .setURL('https://top.gg/bot/994644001397428335/vote')
+      )
+    ]
+  })
+  
   const checkForProfile = await profileSchema.findOne({
     userId: vote.user
   })

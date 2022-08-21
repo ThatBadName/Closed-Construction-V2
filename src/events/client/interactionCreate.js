@@ -50,6 +50,7 @@ module.exports = {
                     ephemeral: true
                 }).catch(() => {})
                 const canVoteCheck = await profileSchema.findOne({userId: interaction.user.id, canVote: true, voteReminders: true})
+                let failedToSend = false
                 if (canVoteCheck) {
                     interaction.user.send({
                         embeds: [
@@ -69,7 +70,29 @@ module.exports = {
                             )
                         ],
                         ephemeral: true
-                    }).catch(() => {})
+                    }).catch(() => {
+                        failedToSend = true
+                    })
+                    if (failedToSend === true) {
+                        interaction.channel.send({
+                            embeds: [
+                                new EmbedBuilder()
+                                .setTitle('You can vote again')
+                                .setDescription('Click [here](https://top.gg/bot/994644001397428335/vote) to vote')
+                                .setFooter({text: 'You can disable this alert with /settings'})
+                                .setColor('a477fc')
+                            ],
+                            components: [
+                                new ActionRowBuilder()
+                                .addComponents(
+                                  new ButtonBuilder()
+                                  .setStyle('Link')
+                                  .setLabel('Vote')
+                                  .setURL('https://top.gg/bot/994644001397428335/vote')
+                                )
+                            ]
+                        })
+                    }
 
                     canVoteCheck.canVote = false
                     canVoteCheck.save()

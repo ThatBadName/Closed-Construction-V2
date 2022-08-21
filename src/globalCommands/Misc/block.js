@@ -83,9 +83,8 @@ module.exports = {
                 pageButtons.components[3].setDisabled(true)
             }
             const firstEmbed = await interaction.reply({
-                embeds: [blocklistEmbeds[0]],
+                embeds: [blocklistEmbeds[0].setFooter({text: `Page: ${currentPage + 1}/${blocklistEmbeds.length}`})],
                 components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${blocklistEmbeds.length}\``,
                 fetchReply: true
             }).catch(() => {
                 return interaction.reply({
@@ -123,8 +122,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${blocklistEmbeds.length}\``,
-                            embeds: [blocklistEmbeds[currentPage]],
+                            embeds: [blocklistEmbeds[currentPage].setFooter({text: `Page: ${currentPage + 1}/${blocklistEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -148,8 +146,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${blocklistEmbeds.length}\``,
-                            embeds: [blocklistEmbeds[currentPage]],
+                            embeds: [blocklistEmbeds[currentPage].setFooter({text: `Page: ${currentPage + 1}/${blocklistEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -173,8 +170,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${blocklistEmbeds.length}\``,
-                            embeds: [blocklistEmbeds[currentPage]],
+                            embeds: [blocklistEmbeds[currentPage].setFooter({text: `Page: ${currentPage + 1}/${blocklistEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -198,8 +194,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${blocklistEmbeds.length}\``,
-                            embeds: [blocklistEmbeds[currentPage]],
+                            embeds: [blocklistEmbeds[currentPage].setFooter({text: `Page: ${currentPage + 1}/${blocklistEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()

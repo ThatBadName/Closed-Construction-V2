@@ -97,7 +97,7 @@ module.exports = {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
                 firstEmbed = await wait.edit({
-                    embeds: [commandEmbeds[0]],
+                    embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                     fetchReply: true
                 }).catch(() => {
                     return wait.edit({
@@ -107,7 +107,7 @@ module.exports = {
                 })
             } else {
                 firstEmbed = await wait.edit({
-                    embeds: [commandEmbeds[0]],
+                    embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                     components: [pageButtons],
                     fetchReply: true
                 }).catch(() => {
@@ -119,7 +119,7 @@ module.exports = {
             }
 
             const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
-                componentType: 'BUTTON',
+                componentType: 'Button',
                 time: 30000
             })
 
@@ -147,8 +147,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -172,8 +171,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -197,8 +195,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -222,8 +219,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -292,8 +288,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -317,8 +312,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -342,8 +336,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -367,8 +360,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
-                            embeds: [commandEmbeds[currentPage]],
+                            embeds: [commandEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()

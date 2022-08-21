@@ -26,7 +26,7 @@ module.exports = {
         .setDescription('Give/remove an item from a user')
         .addStringOption(option => 
             option.setName('item')
-            .setDescription('The item ID')
+            .setDescription('The item ID') 
             .setRequired(true)
         )
         
@@ -605,7 +605,7 @@ module.exports = {
             userId: interaction.user.id,
             botModerator: true
         })
-        if (!checkForDev && !checkForAdmin && !checkForMod && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+        if (!checkForDev && !checkForAdmin && !checkForMod && interaction.user.id !== '804265795835265034') return interaction.reply({
             embeds: [
                 new EmbedBuilder()
                 .setTitle('You do not have permission to do this')
@@ -614,7 +614,7 @@ module.exports = {
         })
 
         if (interaction.options.getSubcommand() === 'dev') {
-            if (!checkForDev && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+            if (!checkForDev && interaction.user.id !== '804265795835265034') return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle('You do not have permission to do this')
@@ -682,7 +682,7 @@ module.exports = {
             }
 
         } else if (interaction.options.getSubcommand() === 'admin') {
-            if (!checkForDev && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+            if (!checkForDev && interaction.user.id !== '804265795835265034') return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle('You do not have permission to do this')
@@ -749,7 +749,7 @@ module.exports = {
             }
 
         } else if (interaction.options.getSubcommand() === 'mod') {
-            if (!checkForDev && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+            if (!checkForDev && interaction.user.id !== '804265795835265034') return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle('You do not have permission to do this')
@@ -1817,7 +1817,7 @@ module.exports = {
                         userId: result.userId
                     })
                     notificationSchema.collection.deleteMany({
-                        userId: i.user.id
+                        userId: result.userId
                     })
                 }
             })
@@ -2009,9 +2009,8 @@ module.exports = {
                 pageButtons.components[3].setDisabled(true)
             }
             const firstEmbed = await omgSoLongMsg.edit({
-                embeds: [invEmbeds[0]],
+                embeds: [invEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${invEmbeds.length}`})],
                 components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
                 fetchReply: true
             }).catch(() => {
                 return omgSoLongMsg.edit({
@@ -2049,8 +2048,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
-                            embeds: [invEmbeds[currentPage]],
+                            embeds: [invEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${invEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2074,8 +2072,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
-                            embeds: [invEmbeds[currentPage]],
+                            embeds: [invEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${invEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2099,8 +2096,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
-                            embeds: [invEmbeds[currentPage]],
+                            embeds: [invEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${invEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2124,8 +2120,7 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${invEmbeds.length}\``,
-                            embeds: [invEmbeds[currentPage]],
+                            embeds: [invEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${invEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2248,7 +2243,7 @@ module.exports = {
             const firstEmbed = await omgSoLongMsg.edit({
                 embeds: [reportListEmbeds[0]],
                 components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
+                
                 fetchReply: true
             }).catch(() => {
                 return omgSoLongMsg.edit({
@@ -2286,8 +2281,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2311,8 +2306,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2336,8 +2331,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2361,8 +2356,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2379,7 +2374,7 @@ module.exports = {
                 })
             })
         } else if (interaction.options.getSubcommand() === 'delete-report') {
-            if (!checkForDev && !checkForAdmin && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+            if (!checkForDev && !checkForAdmin && interaction.user.id !== '804265795835265034') return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle('You do not have permission to do this')
@@ -2731,7 +2726,7 @@ module.exports = {
             const firstEmbed = await omgSoLongMsg.edit({
                 embeds: [reportListEmbeds[0]],
                 components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
+                
                 fetchReply: true
             }).catch(() => {
                 return omgSoLongMsg.edit({
@@ -2769,8 +2764,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2794,8 +2789,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2819,8 +2814,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2844,8 +2839,8 @@ module.exports = {
                             pageButtons.components[1].setDisabled(false)
                         }
                         firstEmbed.edit({
-                            content: `Current Page: \`${currentPage + 1}/${reportListEmbeds.length}\``,
-                            embeds: [reportListEmbeds[currentPage]],
+                            
+                            embeds: [reportListEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${reportListEmbeds.length}`})],
                             components: [pageButtons]
                         })
                         i.deferUpdate()
@@ -2862,7 +2857,7 @@ module.exports = {
                 })
             })
         } else if (interaction.options.getSubcommand() === 'delete-code') {
-            if (!checkForDev && !checkForAdmin && interaction.user.id !== '804265795835265034' && interaction.user.id !== '974856016183328789') return interaction.reply({
+            if (!checkForDev && !checkForAdmin && interaction.user.id !== '804265795835265034') return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle('You do not have permission to do this')

@@ -124,8 +124,7 @@ module.exports = {
                         pageButtons.components[1].setDisabled(false)
                     }
                     firstEmbed.edit({
-                        content: `Current Page: \`${currentPage + 1}/${staffEmbeds.length}\``,
-                        embeds: [staffEmbeds[currentPage]],
+                        embeds: [staffEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${staffEmbeds.length}`})],
                         components: [pageButtons]
                     })
                     i.deferUpdate()
@@ -149,8 +148,7 @@ module.exports = {
                         pageButtons.components[1].setDisabled(false)
                     }
                     firstEmbed.edit({
-                        content: `Current Page: \`${currentPage + 1}/${staffEmbeds.length}\``,
-                        embeds: [staffEmbeds[currentPage]],
+                        embeds: [staffEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${staffEmbeds.length}`})],
                         components: [pageButtons]
                     })
                     i.deferUpdate()
@@ -174,8 +172,7 @@ module.exports = {
                         pageButtons.components[1].setDisabled(false)
                     }
                     firstEmbed.edit({
-                        content: `Current Page: \`${currentPage + 1}/${staffEmbeds.length}\``,
-                        embeds: [staffEmbeds[currentPage]],
+                        embeds: [staffEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${staffEmbeds.length}`})],
                         components: [pageButtons]
                     })
                     i.deferUpdate()
@@ -199,8 +196,7 @@ module.exports = {
                         pageButtons.components[1].setDisabled(false)
                     }
                     firstEmbed.edit({
-                        content: `Current Page: \`${currentPage + 1}/${staffEmbeds.length}\``,
-                        embeds: [staffEmbeds[currentPage]],
+                        embeds: [staffEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${staffEmbeds.length}`})],
                         components: [pageButtons]
                     })
                     i.deferUpdate()

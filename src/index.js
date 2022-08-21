@@ -4,6 +4,7 @@ const { token } = require('../config.json')
 let manager = new ShardingManager('./src/bot.js', {
     token: token,
     totalShards: 'auto',
+    respawn: true
 })
 
 manager.on('shardCreate', shard => {
