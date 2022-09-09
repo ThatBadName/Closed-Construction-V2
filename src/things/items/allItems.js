@@ -9,7 +9,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: 'https://imgur.com/aF9VMiv.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'XP Coin',
@@ -22,7 +23,8 @@ module.exports = [{
         type: 'Power-Up',
         rarity: 'Uncommon',
         url: 'https://imgur.com/OjgbjtL.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'KSchlatt Coin',
@@ -35,46 +37,50 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Unfound',
         url: 'https://imgur.com/CN190J0.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Bad Coin',
         description: 'A dev item. If you own this you are legendary',
         sellPrice: 0,
         buyPrice: 0,
-        tradeValue: 10000000,
+        tradeValue: 100000000,
         emoji: '<:ThatBadName:1005583434921545788>',
         id: 'bad coin',
         type: 'Collectable',
         rarity: 'Unfound',
         url: 'https://imgur.com/ktTmVOY.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Funny dog',
         description: 'A Dog with mayo on its head',
-        sellPrice: 3000000,
+        sellPrice: 0,
         buyPrice: 0,
-        tradeValue: 5000000,
+        tradeValue: 1500000,
         emoji: '<:FunnyDog:1006293232780587178>',
         id: 'funny dog',
         type: 'Collectable',
         rarity: 'Rare',
         url: 'https://imgur.com/toqw5H2.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Shovel',
         description: 'Allows you to dig',
         sellPrice: 100,
-        buyPrice: 25000,
+        buyPrice: 15000,
         tradeValue: 2000,
         emoji: '<:Shovel:1005438385881620501>',
         id: 'shovel',
         type: 'Tool',
         rarity: 'Common',
         url: 'https://imgur.com/kyYulbe.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Dev Coin',
@@ -87,7 +93,8 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Rare',
         url: 'https://imgur.com/VT0PNjk.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Cheque',
@@ -100,12 +107,13 @@ module.exports = [{
         type: 'Power-Up',
         rarity: 'Common',
         url: 'https://imgur.com/ziHIdlX.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Scout',
         description: 'A simple image of scout',
-        sellPrice: 3000000,
+        sellPrice: 0,
         buyPrice: 0,
         tradeValue: 2500000,
         emoji: '<:Scout:1005521226887864480>',
@@ -113,7 +121,8 @@ module.exports = [{
         type: 'Power-Up',
         rarity: 'Rare',
         url: 'https://imgur.com/AmdBWTP.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Rifle',
@@ -126,7 +135,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Rocket Fuel',
@@ -139,7 +149,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Rocket',
@@ -152,7 +163,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Rare',
         url: '',
-        usable: false //Need to change to true when added planets
+        usable: false,
+        marketable: true //Need to change to true when added planets
     },
     {
         name: 'Super Computer',
@@ -165,7 +177,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Rare',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Space Goo',
@@ -178,7 +191,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Plasma',
@@ -191,7 +205,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Rare',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Air',
@@ -204,7 +219,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Metal',
@@ -217,7 +233,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Wood',
@@ -230,7 +247,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Plastic',
@@ -243,7 +261,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Tape',
@@ -256,7 +275,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Uncommon',
         url: 'https://imgur.com/ivNgi2i.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Glue',
@@ -269,7 +289,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Uncommon',
         url: 'https://imgur.com/cCrzLe8.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'String',
@@ -282,7 +303,8 @@ module.exports = [{
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Control Unit',
@@ -295,7 +317,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Rare',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Space Suit',
@@ -308,7 +331,8 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Axe',
@@ -321,7 +345,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pickaxe',
@@ -334,7 +359,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pet Food',
@@ -347,20 +373,22 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Ammo',
         description: 'Needed to keep your rifle loaded',
         sellPrice: 0,
         buyPrice: 100,
-        tradeValue: 0,
+        tradeValue: 10,
         emoji: '',
         id: 'ammo',
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Camera',
@@ -373,7 +401,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Rubbish',
@@ -386,7 +415,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Squid',
@@ -399,7 +429,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Fish',
@@ -412,7 +443,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: 'https://imgur.com/v3h1AZU.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Duck',
@@ -425,7 +457,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Snake',
@@ -438,7 +471,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Alien',
@@ -451,7 +485,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Fishing Rod',
@@ -464,7 +499,8 @@ module.exports = [{
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pet Collar',
@@ -477,7 +513,8 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Rare',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Meteor',
@@ -490,7 +527,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Uncommon',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Berries',
@@ -503,7 +541,8 @@ module.exports = [{
         type: 'Collectable',
         rarity: 'Uncommon',
         url: 'https://imgur.com/IifsgUx.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Minerals',
@@ -516,7 +555,8 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Uncommon',
         url: 'https://imgur.com/7gROPNF.png',
-        usable: false
+        usable: false,
+        marketable: true
     },{
         name: 'Rocks',
         description: 'Found while mining',
@@ -528,6 +568,7 @@ module.exports = [{
         type: 'Sellable',
         rarity: 'Common',
         url: 'https://imgur.com/yOxqj2t.png',
-        usable: false
+        usable: false,
+        marketable: true
     },
 ]

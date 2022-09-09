@@ -58,29 +58,29 @@ module.exports = {
         })
         let currentPage = 0
         const pageButtons = new ActionRowBuilder()
-            .addComponents(
-                new ButtonBuilder()
-                .setCustomId('firstPage')
-                .setEmoji('⏪')
-                .setDisabled(true)
-                .setStyle('Secondary'),
+        .addComponents(
+            new ButtonBuilder()
+            .setCustomId('firstPage')
+            .setEmoji('<:FirstPage:1011987981713817620>')
+            .setDisabled(true)
+            .setStyle('Primary'),
 
-                new ButtonBuilder()
-                .setCustomId('backPage')
-                .setEmoji('◀️')
-                .setDisabled(true)
-                .setStyle('Secondary'),
+            new ButtonBuilder()
+            .setCustomId('backPage')
+            .setEmoji('<:PreviousPage:1011987986033938462>')
+            .setDisabled(true)
+            .setStyle('Primary'),
 
-                new ButtonBuilder()
-                .setCustomId('nextPage')
-                .setEmoji('▶️')
-                .setStyle('Secondary'),
+            new ButtonBuilder()
+            .setCustomId('nextPage')
+            .setEmoji('<:NextPage:1011987984385593415>')
+            .setStyle('Primary'),
 
-                new ButtonBuilder()
-                .setCustomId('lastPage')
-                .setEmoji('⏩')
-                .setStyle('Secondary'),
-            )
+            new ButtonBuilder()
+            .setCustomId('lastPage')
+            .setEmoji('<:LastPage:1011987983060193290>')
+            .setStyle('Primary'),
+        )
 
         const staffEmbeds = await functions.createStaffPages(staff)
         if (staffEmbeds.length === 1) {

@@ -10,7 +10,8 @@ module.exports = [
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Wood',
@@ -23,7 +24,8 @@ module.exports = [
         type: 'Craftable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pet Food',
@@ -36,20 +38,22 @@ module.exports = [
         type: 'Collectable',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Ammo',
         description: 'Needed to keep your rifle loaded',
         sellPrice: 0,
         buyPrice: 100,
-        tradeValue: 0,
+        tradeValue: 10,
         emoji: '',
         id: 'ammo',
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pet Collar',
@@ -62,6 +66,7 @@ module.exports = [
         type: 'Collectable',
         rarity: 'Rare',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
 ]

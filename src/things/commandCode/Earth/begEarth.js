@@ -11,17 +11,17 @@ async function begOnEarth(interaction) {
         userId: interaction.user.id
     })
     if (!userProfile) userProfile = await profileSchema.create({userId: interaction.user.id})
-    const randomCoins = Math.round(Math.random() * (2000 - 1) + 1)
-    const willGetRandomItem = Math.round(Math.random() * 100)
+    const randomCoins = Math.round(Math.random() * (5000 - 1) + 1)
+    const willGetRandomItem = Math.round(Math.random() * 200)
     const willGetDevCoin = Math.round(Math.random() * 20)
     if (willGetDevCoin === 0) {
         const lookupDevCoin = await invSchema.findOne({
             userId: interaction.user.id,
-            itemId: 'dev-coin'
+            itemId: 'dev coin'
         })
         if (!lookupDevCoin) invSchema.create({
             userId: interaction.user.id,
-            itemId: 'dev-coin',
+            itemId: 'dev coin',
             item: 'Dev Coin',
             amount: 1,
             emoji: '<:DeveloperCoin:1005438384765947904>'
@@ -79,8 +79,7 @@ async function begOnEarth(interaction) {
             ]
         })
     } else {
-        const multi = Math.round(randomCoins / 100 * userProfile.coinMulti)
-        const amount = randomCoins + multi
+        let amount = Math.round((randomCoins / 100 * userProfile.coinMulti) + randomCoins)
         userProfile.wallet += amount
         userProfile.save()
 

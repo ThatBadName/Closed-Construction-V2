@@ -196,6 +196,10 @@ module.exports = {
                     name: 'Partner Badge',
                     value: '<:PartnerBadge:1006699813229842523>'
                 },
+                {
+                    name: 'Bug Hunter Badge',
+                    value: '<:BugHunter:1013860134126112818>'
+                }
             )
         )
     )
@@ -1974,29 +1978,29 @@ module.exports = {
             })
             let currentPage = 0
             const pageButtons = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                    .setCustomId('firstPage')
-                    .setEmoji('⏪')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+            .addComponents(
+                new ButtonBuilder()
+                .setCustomId('firstPage')
+                .setEmoji('<:FirstPage:1011987981713817620>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('backPage')
-                    .setEmoji('◀️')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('backPage')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('nextPage')
-                    .setEmoji('▶️')
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('nextPage')
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('lastPage')
-                    .setEmoji('⏩')
-                    .setStyle('Secondary'),
-                )
+                new ButtonBuilder()
+                .setCustomId('lastPage')
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
+            )
 
             const searchResults = await invSchema.find({
                 userId: interaction.options.getString('userid')
@@ -2149,29 +2153,29 @@ module.exports = {
             let currentPage = 0
             let reportList
             const pageButtons = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                    .setCustomId('firstPage')
-                    .setEmoji('⏪')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+            .addComponents(
+                new ButtonBuilder()
+                .setCustomId('firstPage')
+                .setEmoji('<:FirstPage:1011987981713817620>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('backPage')
-                    .setEmoji('◀️')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('backPage')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('nextPage')
-                    .setEmoji('▶️')
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('nextPage')
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('lastPage')
-                    .setEmoji('⏩')
-                    .setStyle('Secondary'),
-                )
+                new ButtonBuilder()
+                .setCustomId('lastPage')
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
+            )
 
             if (interaction.options.getString('id')) {
                 reportList = await reportSchema.find({
@@ -2633,29 +2637,29 @@ module.exports = {
             let currentPage = 0
             let reportList
             const pageButtons = new ActionRowBuilder()
-                .addComponents(
-                    new ButtonBuilder()
-                    .setCustomId('firstPage')
-                    .setEmoji('⏪')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+            .addComponents(
+                new ButtonBuilder()
+                .setCustomId('firstPage')
+                .setEmoji('<:FirstPage:1011987981713817620>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('backPage')
-                    .setEmoji('◀️')
-                    .setDisabled(true)
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('backPage')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
+                .setDisabled(true)
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('nextPage')
-                    .setEmoji('▶️')
-                    .setStyle('Secondary'),
+                new ButtonBuilder()
+                .setCustomId('nextPage')
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
-                    new ButtonBuilder()
-                    .setCustomId('lastPage')
-                    .setEmoji('⏩')
-                    .setStyle('Secondary'),
-                )
+                new ButtonBuilder()
+                .setCustomId('lastPage')
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
+            )
             if (interaction.options.getString('code')) {
                 reportList = await premiumCodeSchema.find({
                     code: interaction.options.getString('code')

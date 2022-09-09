@@ -10,7 +10,8 @@ module.exports = [
         type: 'Power-Up',
         rarity: 'Uncommon',
         url: 'https://imgur.com/OjgbjtL.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Cheque',
@@ -23,19 +24,22 @@ module.exports = [
         type: 'Power Up',
         rarity: 'Common',
         url: 'https://imgur.com/ziHIdlX.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
     {
         name: 'Shovel',
         description: 'Allows you to dig',
         sellPrice: 100,
-        buyPrice: 25000,
+        buyPrice: 15000,
         tradeValue: 2000,
         emoji: '<:Shovel:1005438385881620501>',
         id: 'shovel',
         type: 'Tool',
         rarity: 'Common',
         url: 'https://imgur.com/kyYulbe.png',
+        usable: false,
+        marketable: true
     },
     {
         name: 'Rifle',
@@ -48,7 +52,8 @@ module.exports = [
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Axe',
@@ -61,7 +66,8 @@ module.exports = [
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
     {
         name: 'Pickaxe',
@@ -74,6 +80,7 @@ module.exports = [
         type: 'Tool',
         rarity: 'Common',
         url: '',
-        usable: false
+        usable: false,
+        marketable: true
     },
 ]

@@ -56,25 +56,25 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder()
                 .setCustomId('firstPage')
-                .setEmoji('⏪')
+                .setEmoji('<:FirstPage:1011987981713817620>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('backPage')
-                .setEmoji('◀️')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('nextPage')
-                .setEmoji('▶️')
-                .setStyle('Secondary'),
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('lastPage')
-                .setEmoji('⏩')
-                .setStyle('Secondary'),
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
             )
 
             await profileSchema.findOneAndUpdate({
@@ -119,7 +119,7 @@ module.exports = {
             }
 
             const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
-                componentType: 'Button',
+                type: 'Button',
                 time: 30000
             })
 
@@ -248,9 +248,8 @@ module.exports = {
                 pageButtons.components[3].setDisabled(true)
             }
             const firstEmbed = await wait.edit({
-                embeds: [commandEmbeds[0]],
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
-                content: `Current Page: \`${currentPage + 1}/${commandEmbeds.length}\``,
                 fetchReply: true
             }).catch(() => {
                 return wait.edit({
@@ -260,7 +259,7 @@ module.exports = {
             })
 
             const pageButtonCollector = await firstEmbed.createMessageComponentCollector({
-                componentType: 'BUTTON',
+                type: 'Button',
                 time: 30000
             })
 

@@ -4,7 +4,8 @@ const {
     ButtonBuilder,
     SlashCommandBuilder
 } = require('discord.js')
-let items = require('../../things/items/allItems')
+let itemsBuy = require('../../things/items/allItems')
+let itemsSell = require('../../things/items/allItems')
 const profileSchema = require('../../models/userProfile')
 const invSchema = require('../../models/inventorySchema')
 const items1 = require('../../things/items/items-page1')
@@ -15,65 +16,65 @@ const items5 = require('../../things/items/items-page5')
 
 module.exports = {
     data: new SlashCommandBuilder()
-    .setName('shop')
-    .setDMPermission(false)
-    .setDescription('The bot shop')
-    .addSubcommand(option => 
-        option.setName('view')
-        .setDescription('View the shop')    
-    )
-
-    .addSubcommand(option =>
-        option.setName('buy')
-        .setDescription('Buy an item')
-        
-        .addStringOption(option =>
-            option.setName('buy-item')
-            .setDescription('The item you want to buy')
-            .setMaxLength(25)
-            .setMinLength(1)
-            .setRequired(true)
-            .setAutocomplete(true)
+        .setName('shop')
+        .setDMPermission(false)
+        .setDescription('The bot shop')
+        .addSubcommand(option =>
+            option.setName('view')
+            .setDescription('View the shop')
         )
 
-        .addIntegerOption(option =>
-            option.setName('quantity')
-            .setDescription('The amount of the item to buy')
-            .setRequired(false)
-            .setMinValue(1)
-            .setMaxValue(1000000)
-        )
-    )
+        .addSubcommand(option =>
+            option.setName('buy')
+            .setDescription('Buy an item')
 
-    .addSubcommand(option =>
-        option.setName('sell')
-        .setDescription('Sell an item')
-        
-        .addStringOption(option =>
-            option.setName('sell-item')
-            .setDescription('The ID of the item you want to sell')
-            .setMaxLength(25)
-            .setMinLength(1)
-            .setRequired(true)
-            .setAutocomplete(true)
+            .addStringOption(option =>
+                option.setName('buy-item')
+                .setDescription('The item you want to buy')
+                .setMaxLength(25)
+                .setMinLength(1)
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+
+            .addIntegerOption(option =>
+                option.setName('quantity')
+                .setDescription('The amount of the item to buy')
+                .setRequired(false)
+                .setMinValue(1)
+                .setMaxValue(1000000)
+            )
         )
 
-        .addIntegerOption(option =>
-            option.setName('quantity')
-            .setDescription('The amount of the item to sell')
-            .setRequired(false)
-            .setMinValue(1)
-            .setMaxValue(1000000)
-        )
-    ),
+        .addSubcommand(option =>
+            option.setName('sell')
+            .setDescription('Sell an item')
+
+            .addStringOption(option =>
+                option.setName('sell-item')
+                .setDescription('The ID of the item you want to sell')
+                .setMaxLength(25)
+                .setMinLength(1)
+                .setRequired(true)
+                .setAutocomplete(true)
+            )
+
+            .addIntegerOption(option =>
+                option.setName('quantity')
+                .setDescription('The amount of the item to sell')
+                .setRequired(false)
+                .setMinValue(1)
+                .setMaxValue(1000000)
+            )
+        ),
 
     async autocomplete(interaction) {
         const focusedOption = interaction.options.getFocused(true)
 
         if (focusedOption.name === 'buy-item') {
-            items = items.filter(item => item.buyPrice > 0)
+            itemsBuy = itemsBuy.filter(item => item.buyPrice > 0)
             const focusedValue = interaction.options.getFocused()
-            const choices = items.map(i => `${i.name},${i.id}`).sort()
+            const choices = itemsBuy.map(i => `${i.name},${i.id}`).sort()
             const filtered = choices.filter((choice) =>
                 choice.includes(focusedValue)
             ).slice(0, 25)
@@ -84,9 +85,9 @@ module.exports = {
                 }))
             )
         } else if (focusedOption.name === 'sell-item') {
-            items = items.filter(item => item.sellPrice > 0)
+            itemsSell = itemsSell.filter(item => item.sellPrice >= 1)
             const focusedValue = interaction.options.getFocused()
-            const choices = items.map(i => `${i.name},${i.id}`).sort()
+            const choices = itemsSell.map(i => `${i.name},${i.id}`).sort()
             const filtered = choices.filter((choice) =>
                 choice.includes(focusedValue)
             ).slice(0, 25)
@@ -291,7 +292,7 @@ module.exports = {
 
             functions.createRecentCommand(interaction.user.id, 'shop-buy', `ITEM: ${itemQuery} | AMOUNT: ${amount}`, interaction)
 
-            const search = !!items.find((value) => value.id === itemQuery)
+            const search = !!itemsBuy.find((value) => value.id === itemQuery)
             if (!search) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -299,7 +300,7 @@ module.exports = {
                     .setColor('0xa744f2')
                 ]
             })
-            const itemFound = items.find((value) => value.id === itemQuery)
+            const itemFound = itemsBuy.find((value) => value.id === itemQuery)
             const userProfile = await profileSchema.findOne({
                 userId: interaction.user.id
             })
@@ -331,62 +332,134 @@ module.exports = {
                 ]
             })
 
-            const scanDatabaseForItem = await invSchema.findOne({
-                userId: interaction.user.id,
-                itemId: itemQuery.toLowerCase()
+            const confirmMessage = await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle('Are you sure?')
+                    .setDescription(`Are you sure that you want to buy ${amount.toLocaleString()} ${itemFound.emoji}${itemFound.name} for \`${(itemFound.buyPrice * amount).toLocaleString()}\` coins`)
+                    .setColor('0xa477fc')
+                ],
+                components: [
+                    new ActionRowBuilder()
+                    .addComponents(
+                        new ButtonBuilder()
+                        .setCustomId('shop-y')
+                        .setLabel('Confirm')
+                        .setStyle('Success'),
+
+                        new ButtonBuilder()
+                        .setCustomId('shop-n')
+                        .setLabel('Cancel')
+                        .setStyle('Danger')
+                    )
+                ],
+                fetchReply: true
             })
-            if (scanDatabaseForItem) {
-                scanDatabaseForItem.amount += amount
-                scanDatabaseForItem.save()
-                userProfile.wallet -= itemFound.buyPrice * amount
-                userProfile.save()
-                interaction.reply({
+
+            const collector = await confirmMessage.createMessageComponentCollector({
+                type: 'Button',
+                time: 10000
+            })
+
+            let collected = false
+            collector.on('collect', async (i) => {
+                if (i.user.id !== interaction.user.id) return interaction.reply({
                     embeds: [
                         new EmbedBuilder()
-                        .setTitle('You have bought an item')
-                        .setColor('0xa744f2')
-                        .setFields({
-                            name: 'Item',
-                            value: `${itemFound.emoji} ${itemFound.name}`,
-                            inline: true
-                        }, {
-                            name: 'Amount',
-                            value: `\`${amount.toLocaleString()}\``
-                        }, {
-                            name: 'Bought For',
-                            value: `\`${(itemFound.buyPrice * amount).toLocaleString()}\` coins`
+                        .setTitle('This is not for you')
+                        .setColor('0xa477fc')
+                    ],
+                    ephemeral: true
+                })
+
+                if (i.customId === 'shop-y') {
+                    collected = true
+                    i.deferUpdate()
+                    const scanDatabaseForItem = await invSchema.findOne({
+                        userId: interaction.user.id,
+                        itemId: itemQuery.toLowerCase()
+                    })
+                    if (scanDatabaseForItem) {
+                        scanDatabaseForItem.amount += amount
+                        scanDatabaseForItem.save()
+                        userProfile.wallet -= itemFound.buyPrice * amount
+                        userProfile.save()
+                        confirmMessage.edit({
+                            embeds: [
+                                new EmbedBuilder()
+                                .setTitle('You have bought an item')
+                                .setColor('0xa744f2')
+                                .setFields({
+                                    name: 'Item',
+                                    value: `${itemFound.emoji} ${itemFound.name}`,
+                                    inline: true
+                                }, {
+                                    name: 'Amount',
+                                    value: `\`${amount.toLocaleString()}\``
+                                }, {
+                                    name: 'Bought For',
+                                    value: `\`${(itemFound.buyPrice * amount).toLocaleString()}\` coins (\`${itemFound.buyPrice.toLocaleString()}\` coins each)`
+                                })
+                            ],
+                            components: []
                         })
-                    ]
-                })
-            } else {
-                invSchema.create({
-                    userId: interaction.user.id,
-                    emoji: itemFound.emoji,
-                    item: itemFound.name,
-                    itemId: itemFound.id,
-                    amount: amount
-                })
-                userProfile.wallet -= itemFound.buyPrice * amount
-                userProfile.save()
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                        .setTitle('You have bought an item')
-                        .setColor('0xa744f2')
-                        .setFields({
-                            name: 'Item',
-                            value: `${itemFound.emoji} ${itemFound.name}`,
-                            inline: true
-                        }, {
-                            name: 'Amount',
-                            value: `\`${amount.toLocaleString()}\``
-                        }, {
-                            name: 'Bought For',
-                            value: `\`${(itemFound.buyPrice * amount).toLocaleString()}\` coins`
+                    } else {
+                        invSchema.create({
+                            userId: interaction.user.id,
+                            emoji: itemFound.emoji,
+                            item: itemFound.name,
+                            itemId: itemFound.id,
+                            amount: amount
                         })
-                    ]
-                })
-            }
+                        userProfile.wallet -= itemFound.buyPrice * amount
+                        userProfile.save()
+                        confirmMessage.edit({
+                            embeds: [
+                                new EmbedBuilder()
+                                .setTitle('You have bought an item')
+                                .setColor('0xa744f2')
+                                .setFields({
+                                    name: 'Item',
+                                    value: `${itemFound.emoji} ${itemFound.name}`,
+                                    inline: true
+                                }, {
+                                    name: 'Amount',
+                                    value: `\`${amount.toLocaleString()}\``
+                                }, {
+                                    name: 'Bought For',
+                                    value: `\`${(itemFound.buyPrice * amount).toLocaleString()}\` coins (\`${itemFound.buyPrice.toLocaleString()}\` coins each)`
+                                })
+                            ],
+                            components: []
+                        })
+                    }
+                } else if (i.customId === 'shop-n') {
+                    i.deferUpdate()
+                    collected = true
+                    collector.stop()
+                    confirmMessage.edit({
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle('Canceled')
+                            .setColor('0xa477fc')
+                        ],
+                        components: []
+                    })
+                }
+            })
+
+            collector.on('end', async () => {
+                if (collected === false) {
+                    confirmMessage.edit({
+                        embeds: [
+                            new EmbedBuilder()
+                            .setTitle('Timed out')
+                            .setColor('0xa477fc')
+                        ],
+                        components: []
+                    })
+                }
+            })
         } else if (interaction.options.getSubcommand() === 'sell') {
             let itemQuery = interaction.options.getString('sell-item')
             itemQuery = itemQuery.toLowerCase()
@@ -395,7 +468,7 @@ module.exports = {
 
             functions.createRecentCommand(interaction.user.id, 'shop-sell', `ITEM: ${itemQuery.toLocaleString()} | AMOUNT: ${amount.toLocaleString()}`, interaction)
 
-            const search = !!items.find((value) => value.id === itemQuery)
+            const search = !!itemsBuy.find((value) => value.id === itemQuery)
             if (!search) return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -403,7 +476,7 @@ module.exports = {
                     .setColor('0xa744f2')
                 ]
             })
-            const itemFound = items.find((value) => value.id === itemQuery)
+            const itemFound = itemsBuy.find((value) => value.id === itemQuery)
             const userProfile = await profileSchema.findOne({
                 userId: interaction.user.id
             })

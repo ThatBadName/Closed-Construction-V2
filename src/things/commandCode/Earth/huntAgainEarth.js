@@ -33,6 +33,11 @@ async function huntAgainEarth(interaction) {
                 new ButtonBuilder()
                 .setLabel('Hunt Again')
                 .setCustomId('hunt-again')
+                .setStyle('Secondary'),
+
+                new ButtonBuilder()
+                .setLabel('Buy Rifle')
+                .setCustomId('buy-rifle')
                 .setStyle('Secondary')
             )
         ]
@@ -50,14 +55,19 @@ async function huntAgainEarth(interaction) {
                 new ButtonBuilder()
                 .setLabel('Hunt Again')
                 .setCustomId('hunt-again')
+                .setStyle('Secondary'),
+
+                new ButtonBuilder()
+                .setLabel('Buy Ammo')
+                .setCustomId('buy-ammo')
                 .setStyle('Secondary')
             )
         ]
     })
 
-    const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
+    const randomCoins = Math.round(Math.random() * (5000 - 5) + 5)
     const willGetRandomItem = Math.round(Math.random() * 5)
-    const willToolBreak = Math.round(Math.random() * 10)
+    const willToolBreak = Math.round(Math.random() * 100)
     const reasonsToBreak = [
         `Your rifle got jammed and you threw it agains a rock in fustration`,
         `Your rifle decided that it would no longer work`,
@@ -73,6 +83,23 @@ async function huntAgainEarth(interaction) {
             `snake,<:ImageNotFound:1005453599800840262>,Snake`,
             `duck,<:ImageNotFound:1005453599800840262>,Duck`,
             `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            `berries,<:Berries:1006621693009215559>,Berries`,
+            `snake,<:ImageNotFound:1005453599800840262>,Snake`,
+            `duck,<:ImageNotFound:1005453599800840262>,Duck`,
+            `rubbish,<:ImageNotFound:1005453599800840262>,Rubbish`,
+            
         ]
         let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
         const lookupItem = await invSchema.findOne({
@@ -94,7 +121,7 @@ async function huntAgainEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} Uhhh something happened`)
+                .setTitle(`${interaction.user.tag} found something`)
                 .setColor('0xa744fc')
                 .setDescription(`You found ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while hunting.`)
             ],
@@ -130,8 +157,7 @@ async function huntAgainEarth(interaction) {
             ]
         })
     } else {
-        const multi = Math.round(randomCoins / 100 * userProfile.coinMulti)
-        const amount = randomCoins + multi
+        let amount = Math.round((randomCoins / 100 * userProfile.coinMulti) + randomCoins)
         userProfile.wallet += amount
         userProfile.save()
 

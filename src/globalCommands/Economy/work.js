@@ -31,7 +31,7 @@ module.exports = {
             .addStringOption(option =>
                 option.setName('job')
                 .setDescription('The new job to work as')
-                .setMaxLength(15)
+                .setMaxLength(17)
                 .setAutocomplete(true)
                 .setRequired(true)
             )
@@ -65,15 +65,13 @@ module.exports = {
         if (blks === true) return
         const main = await functions.checkMaintinance(interaction)
         if (main === true) return
-        // const cldn = await functions.cooldownCheck(interaction.user.id, 'use', 5, interaction)
-        // if (cldn === true) return
 
         if (interaction.options.getSubcommand() === 'list') {
             const cldn = await functions.cooldownCheck(interaction.user.id, 'job-list', 5, interaction)
             if (cldn === true) return
             functions.createRecentCommand(interaction.user.id, 'job-list', `None`, interaction)
 
-            const jobList = allJobs.map((value) => `> **${value.name}**\n> \`${value.pay.toLocaleString()}\` per hour - Requires level \`${value.levelRequired}\``).join('\n\n')
+            const jobList = allJobs.map((value) => `> **${value.name}**\n> \`${value.pay < 250000 ? Math.round(value.pay * 2).toLocaleString() : value.pay > 600000 && value.pay < 1000000 ? Math.round(value.pay / 2).toLocaleString() : value.pay >= 1000000 ? Math.round(value.pay / 6).toLocaleString() : value.pay.toLocaleString()}\` per hour - Requires level \`${value.levelRequired}\``).join('\n\n')
 
             interaction.reply({
                 embeds: [
@@ -98,8 +96,6 @@ module.exports = {
                     .setColor('0xa744f2')
                 ]
             })
-            const cldn = await functions.cooldownCheck(interaction.user.id, 'job-new', 21600, interaction)
-            if (cldn === true) return
             const jobFound = allJobs.find((value) => value.name === jobQuery)
             let userProfile = await profileSchema.findOne({
                 userId: interaction.user.id
@@ -114,10 +110,23 @@ module.exports = {
                     .setTitle(`You are not a high enough level to work as a ${jobFound.name}. You must be level ${jobFound.levelRequired} and you are only level ${userProfile.level}`)
                 ]
             })
+            
+            if (userProfile.job === jobFound.name) return interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle('You already work as this')
+                    .setColor('0xa477fc')
+                ]
+            })
+            const cldn = await functions.cooldownCheck(interaction.user.id, 'job-new', 21600, interaction)
+            if (cldn === true) return
             await profileSchema.findOneAndUpdate({
                 userId: interaction.user.id
             }, {
-                job: jobFound.name
+                job: jobFound.name,
+                $unset: {
+                    getsFiresOn: ""
+                }
             })
             interaction.reply({
                 embeds: [
@@ -200,16 +209,44 @@ module.exports = {
                 ]
             })
             const jobFound = allJobs.find((value) => value.name === jobQuery)
+            if (profile.hasBeenFired === true) {
+                await profileSchema.findOneAndUpdate({
+                    userId: interaction.user.id
+                }, {
+                    job: '',
+                    hasBeenFired: false,
+                    $unset: {
+                        getsFiresOn: ""
+                    }
+                })
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                        .setTitle('You have been fired')
+                        .setColor('0xa477fc')
+                        .setDescription(`You have not worked for 3 days and so your boss fired you`)
+                    ]
+                })
+
+                return await functions.cooldownCheck(interaction.user.id, 'job-new', 21600, interaction)
+            }
             if (jobFound.pay < 250000) {
                 const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 1800, interaction)
                 if (cldn === true) return
-            } else if (jobFound.pay > 700000) {
+            } else if (jobFound.pay > 600000) {
                 const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 7200, interaction)
+                if (cldn === true) return
+            } else if (jobFound.pay >= 1000000) {
+                const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 21600, interaction)
                 if (cldn === true) return
             } else {
                 const cldn = await functions.cooldownCheck(interaction.user.id, 'job-work', 3600, interaction)
                 if (cldn === true) return
             }
+
+            const date = new Date()
+            date.setHours(date.getHours() + 72)
 
             if (profile.job === 'Cook') {
                 const rng = Math.round(Math.random())
@@ -232,41 +269,42 @@ module.exports = {
 
                     const amount = Math.round(jobFound.pay / 100 * profile.coinMulti) + jobFound.pay
                     profile.wallet += amount
+                    profile.getsFiresOn = date
                     profile.save()
 
                     return interaction.reply({
                         embeds: [
                             new EmbedBuilder()
                             .setTitle('You worked as a Cook')
-                            .setDescription(`You got \`${amount.toLocaleString()}\` coins and 1 <:Cheese:1005438383570571294> Cheese`)
+                            .setDescription(`You got \`${jobFound.pay.toLocaleString()}\` coins and 1 <:Cheese:1005438383570571294> Cheese`)
                             .setColor('0xa477fc')
                         ]
                     })
                 } else {
-                    const amount = Math.round(jobFound.pay / 100 * profile.coinMulti) + jobFound.pay
-                    profile.wallet += amount
+                    profile.wallet += jobFound.pay
+                    profile.getsFiresOn = date
                     profile.save()
 
                     return interaction.reply({
                         embeds: [
                             new EmbedBuilder()
                             .setTitle('You worked as a Cook')
-                            .setDescription(`You got \`${amount.toLocaleString()}\` coins`)
+                            .setDescription(`You got \`${jobFound.pay.toLocaleString()}\` coins`)
                             .setColor('0xa477fc')
                         ]
                     })
                 }
             }
 
-            const amount = Math.round(jobFound.pay / 100 * profile.coinMulti) + jobFound.pay
-            profile.wallet += amount
+            profile.wallet += jobFound.pay
+            profile.getsFiresOn = date
             profile.save()
 
             interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                     .setTitle(`You worked as a ${profile.job}`)
-                    .setDescription(`You got \`${amount.toLocaleString()}\` coins`)
+                    .setDescription(`You got \`${jobFound.pay.toLocaleString()}\` coins`)
                     .setColor('0xa477fc')
                 ]
             })

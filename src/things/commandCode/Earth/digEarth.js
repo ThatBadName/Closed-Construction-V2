@@ -29,14 +29,19 @@ async function digOnEarth(interaction) {
                 new ButtonBuilder()
                 .setLabel('Dig Again')
                 .setCustomId('dig-again')
+                .setStyle('Secondary'),
+
+                new ButtonBuilder()
+                .setLabel('Buy Shovel')
+                .setCustomId('buy-shovel')
                 .setStyle('Secondary')
             )
         ]
     })
 
-    const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
+    const randomCoins = Math.round(Math.random() * (5000 - 5) + 5)
     const willGetRandomItem = Math.round(Math.random() * 5)
-    const willToolBreak = Math.round(Math.random() * 10)
+    const willToolBreak = Math.round(Math.random() * 100)
     const reasonsToBreak = [
         'Your shovel hit a rock and shattered into pieces',
         'Some mole decided to grab your shovel and hide it',
@@ -50,7 +55,41 @@ async function digOnEarth(interaction) {
         const randomItems = [
             `funny dog,<:FunnyDog:1006293232780587178>,Funny Dog`,
             `tape,<:DuctTape:1006293231476166737>,Tape`,
-            `glue,<:Glue:1006637919873806416>,Glue`
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
+            `tape,<:DuctTape:1006293231476166737>,Tape`,
+            `glue,<:Glue:1006637919873806416>,Glue`,
         ]
         let itemToGet = randomItems[Math.floor(Math.random() * randomItems.length)]
         const lookupItem = await invSchema.findOne({
@@ -72,7 +111,7 @@ async function digOnEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} Uhhh something happened`)
+                .setTitle(`${interaction.user.tag} found something`)
                 .setColor('0xa744fc')
                 .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while digging.`)
             ],
@@ -108,8 +147,7 @@ async function digOnEarth(interaction) {
             ]
         })
     } else {
-        const multi = Math.round(randomCoins / 100 * userProfile.coinMulti)
-        const amount = randomCoins + multi
+        let amount = Math.round((randomCoins / 100 * userProfile.coinMulti) + randomCoins)
         userProfile.wallet += amount
         userProfile.save()
 

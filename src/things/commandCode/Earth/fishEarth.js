@@ -29,14 +29,19 @@ async function fishOnEarth(interaction) {
                 new ButtonBuilder()
                 .setLabel('Fish Again')
                 .setCustomId('fish-again')
+                .setStyle('Secondary'),
+
+                new ButtonBuilder()
+                .setLabel('Buy Rod')
+                .setCustomId('buy-rod')
                 .setStyle('Secondary')
             )
         ]
     })
 
-    const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
+    const randomCoins = Math.round(Math.random() * (5000 - 5) + 5)
     const willGetRandomItem = Math.round(Math.random() * 5)
-    const willToolBreak = Math.round(Math.random() * 10)
+    const willToolBreak = Math.round(Math.random() * 100)
     const reasonsToBreak = [
         `A fish ate your bait, and the fishing wire, and the rod. HOW????`,
         `You got pushed into the river by a stranger. You got out but you lost your fishing rod`,
@@ -76,7 +81,7 @@ async function fishOnEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} Uhhh something happened`)
+                .setTitle(`${interaction.user.tag} found something`)
                 .setColor('0xa744fc')
                 .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while fishing.`)
             ],
@@ -112,8 +117,7 @@ async function fishOnEarth(interaction) {
             ]
         })
     } else {
-        const multi = Math.round(randomCoins / 100 * userProfile.coinMulti)
-        const amount = randomCoins + multi
+        let amount = Math.round((randomCoins / 100 * userProfile.coinMulti) + randomCoins)
         userProfile.wallet += amount
         userProfile.save()
 
