@@ -94,7 +94,7 @@ module.exports = {
                     new EmbedBuilder()
                     .setColor('0xa744f2')
                     .setTitle(`Found item: ${itemFound.name}`)
-                    .setDescription(`**${itemFound.name}** (\`${itemFound.id}\`)\n${itemFound.description}\n\n**Buy Price**: \`${itemFound.buyPrice === 0 ? 'Cannot be bought' : itemFound.buyPrice.toLocaleString()}\`\n**Sell Price**: \`${itemFound.sellPrice === 0 ? 'Cannot be sold' : itemFound.sellPrice.toLocaleString()}\`\n**Trade Value**: \`${itemFound.tradeValue.toLocaleString()}\``)
+                    .setDescription(`**${itemFound.name}** (\`${itemFound.id}\`)\n${itemFound.description}\n\n**Buy Price**: \`${itemFound.buyPrice === 0 ? 'Cannot be bought' : itemFound.buyPrice.toLocaleString()}\`\n**Sell Price**: \`${itemFound.sellPrice === 0 ? 'Cannot be sold' : itemFound.sellPrice.toLocaleString()}\`\n**Market Value**: \`${itemFound.tradeValue.toLocaleString()}\``)
                     .setFields({
                         name: 'Type',
                         value: `\`${itemFound.type || 'None'}\``,

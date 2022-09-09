@@ -106,6 +106,33 @@ const checkForExpiredBoosts = async () => {
 }
 checkForExpiredBoosts()
 
+const checkForExpiredJobs = async () => {
+  const query = {
+    getsFiresOn: {
+      $lt: new Date()
+    },
+    hasBeenFired: false
+  }
+
+  const results = await profileSchema.find(query)
+
+  for (const result of results) {
+    const {
+      userId,
+    } = result
+
+    const userProfile = await profileSchema.findOne({
+      userId: userId
+    })
+    if (!userProfile) continue
+
+      userProfile.hasBeenFired = true
+      userProfile.save()
+  }
+  setTimeout(checkForExpiredJobs, 1000 * 1)
+}
+checkForExpiredJobs()
+
 const checkForNotifs = async () => {
   const query = {
     expires: {
@@ -279,7 +306,7 @@ app.post("/dblwebhook", webhook.listener(async (vote) => {
   }
 }))
 
-app.listen(10002)
+app.listen(10003)
 
 client.on('guildCreate', async (guild) => {
   const g = await client.guilds.cache.get(guild.id)?.fetch()

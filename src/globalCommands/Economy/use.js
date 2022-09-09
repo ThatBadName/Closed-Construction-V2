@@ -95,7 +95,7 @@ module.exports = {
 
         if (amount > userInv.amount) amount = userInv.amount
         if (itemFound.id === 'berries') amount = 1
-        if (itemFound.id !== 'dev-coin' && itemFound.id !== 'scout') {
+        if (itemFound.id !== 'dev coin' && itemFound.id !== 'scout') {
             if (amount === userInv.amount) userInv.delete()
             else userInv.amount -= amount;
             userInv.save()
@@ -124,7 +124,7 @@ module.exports = {
                 })
                 break
 
-            case "xp-coin":
+            case "xp coin":
                 const amountToAdd = Math.floor(Math.random() * (75 - 10) + 10) * amount
                 userProfile.xpBoost += amountToAdd
                 userProfile.save()
@@ -149,7 +149,7 @@ module.exports = {
                     ]
                 })
                 break
-                case "dev-coin":
+                case "dev coin":
                     const check = await activeDevCoinSchema.findOne({userId: interaction.user.id})
                     if (check) return interaction.reply({
                         embeds: [
@@ -218,9 +218,9 @@ module.exports = {
                 case "berries":
                     const rng = Math.round(Math.random() * (2 - 1) + 1)
                     if (rng === 1) {
-                        const randomGood = Math.round(Math.round() * (3 - 1) + 1)
+                        const randomGood = Math.round(Math.random() * (3 - 1) + 1)
                         if (randomGood === 1) {
-                            const amountAdding = Math.round(Math.random() * (50 - 10) + 10)
+                            const amountAdding = Math.round(Math.random() * (15 - 10) + 10)
                             userProfile.xpBoost += amountAdding
                             userProfile.save()
 
@@ -228,12 +228,12 @@ module.exports = {
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`you got an XP Booster of \`${amountAdding}%\`. Your total XP boost is now \`${userProfile.xpBoost}%\``)
+                                    .setDescription(`You got an XP Booster of \`${amountAdding.toLocaleString()}%\`. Your total XP boost is now \`${userProfile.xpBoost.toLocaleString()}%\``)
                                     .setColor('0xa744fc')
                                 ]
                             })
                         } else if (randomGood === 2) {
-                            const amountAdding = Math.round(Math.random() * (50 - 10) + 10)
+                            const amountAdding = Math.round(Math.random() * (15 - 10) + 10)
                             userProfile.coinMulti += amountAdding
                             userProfile.save()
 
@@ -241,7 +241,7 @@ module.exports = {
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`you got a Coin Multi boost of \`${amountAdding}%\`. Your total Coin Multi is now \`${userProfile.coinMulti}%\``)
+                                    .setDescription(`You got a Coin Multi boost of \`${amountAdding.toLocaleString()}%\`. Your total Coin Multi is now \`${userProfile.coinMulti.toLocaleString()}%\``)
                                     .setColor('0xa744fc')
                                 ]
                             })
@@ -257,34 +257,34 @@ module.exports = {
                                 if (result.dmNotifs === true) {
                                     try {
                                         interaction.user.send({
-                                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level}**. As a reward you have been given \`${reward}\` coins`)]
+                                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level.toLocaleString()}**. As a reward you have been given \`${reward.toLocaleString()}\` coins`)]
                                         })
                                     } catch (err) {
                                         interaction.channel.send({
                                             content: `${interaction.user},`,
-                                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level}**. As a reward you have been given \`${reward}\` coins`)]
+                                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level.toLocaleString()}**. As a reward you have been given \`${reward.toLocaleString()}\` coins`)]
                                         })
                                     }
                                 } else {
                                     interaction.channel.send({
                                         content: `${interaction.user},`,
-                                        embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level}**. As a reward you have been given \`${reward}\` coins`)]
+                                        embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${userProfile.level.toLocaleString()}**. As a reward you have been given \`${reward.toLocaleString()}\` coins`)]
                                     })
                                 }
-                                functions.createNewNotif(interaction.user.id, `You are now **level ${userProfile.level}**. As a reward you have been given \`${reward}\` coins`)
+                                functions.createNewNotif(interaction.user.id, `You are now **level ${userProfile.level.toLocaleString()}**. As a reward you have been given \`${reward.toLocaleString()}\` coins`)
                             }
 
                             interaction.reply({
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`you got an XP boost of \`${amountAdding}XP\`. Your total XP is now \`${userProfile.xp}\``)
+                                    .setDescription(`You got some free XP \`${amountAdding.toLocaleString()}XP\`. Your total XP is now \`${userProfile.xp.toLocaleString()}\``)
                                     .setColor('0xa744fc')
                                 ]
                             })
                         }
                     } else {
-                        const randomBad = Math.round(Math.round() * (3 - 1) + 1)
+                        const randomBad = Math.round(Math.random() * (3 - 1) + 1)
                         if (randomBad === 1) {
                             const amountRemoving = Math.round(Math.random() * (userProfile.wallet / 100 * 40))
                             userProfile.wallet -= amountRemoving
@@ -294,7 +294,7 @@ module.exports = {
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`you felt so sick you had to go to the doctor. They charged you \`${amountRemoving}\`. Your new balance is \`${userProfile.wallet}\``)
+                                    .setDescription(`You felt so sick you had to go to the doctor. They charged you \`${amountRemoving.toLocaleString()}\`. Your new balance is \`${userProfile.wallet.toLocaleString()}\``)
                                     .setColor('0xa744fc')
                                 ]
                             })
@@ -307,12 +307,12 @@ module.exports = {
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`your Coin Mutli went down by \`${amountRemoving}\`. Your new Coin Multi is \`${userProfile.coinMulti}\``)
+                                    .setDescription(`Your Coin Multi went down by \`${amountRemoving.toLocaleString()}%\`. Your new Coin Multi is \`${userProfile.coinMulti.toLocaleString()}%\``)
                                     .setColor('0xa744fc')
                                 ]
                             })
                         } else if (randomBad === 3) {
-                            const amountRemoving = Math.round(Math.random() * (userProfile.coinMulti / 100 * 40))
+                            const amountRemoving = Math.round(Math.random() * (userProfile.xpBoost / 100 * 40))
                             userProfile.xpBoost -= amountRemoving
                             userProfile.save()
 
@@ -320,7 +320,7 @@ module.exports = {
                                 embeds: [
                                     new EmbedBuilder()
                                     .setTitle('You ate some berries and...')
-                                    .setDescription(`your XP Booster went down by \`${amountRemoving}%\`. Your new XP Booster total is \`${userProfile.xpBoost}%\``)
+                                    .setDescription(`Your XP Booster went down by \`${amountRemoving.toLocaleString()}%\`. Your new XP Booster total is \`${userProfile.xpBoost.toLocaleString()}%\``)
                                     .setColor('0xa744fc')
                                 ]
                             })

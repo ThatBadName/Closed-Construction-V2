@@ -139,25 +139,25 @@ module.exports = {
                     .addComponents(
                         new ButtonBuilder()
                         .setCustomId('firstPage')
-                        .setEmoji('⏪')
+                        .setEmoji('<:FirstPage:1011987981713817620>')
                         .setDisabled(true)
-                        .setStyle('Secondary'),
+                        .setStyle('Primary'),
 
                         new ButtonBuilder()
                         .setCustomId('backPage')
-                        .setEmoji('◀️')
+                        .setEmoji('<:PreviousPage:1011987986033938462>')
                         .setDisabled(true)
-                        .setStyle('Secondary'),
+                        .setStyle('Primary'),
 
                         new ButtonBuilder()
                         .setCustomId('nextPage')
-                        .setEmoji('▶️')
-                        .setStyle('Secondary'),
+                        .setEmoji('<:NextPage:1011987984385593415>')
+                        .setStyle('Primary'),
 
                         new ButtonBuilder()
                         .setCustomId('lastPage')
-                        .setEmoji('⏩')
-                        .setStyle('Secondary'),
+                        .setEmoji('<:LastPage:1011987983060193290>')
+                        .setStyle('Primary'),
                     )
                 if (interaction.options.getString('type') === 'guild') {
                     const blacklist = await blacklistedGuilds.find()
@@ -185,13 +185,13 @@ module.exports = {
 
                     pageButtonCollector.on('collect', async (i) => {
                         if (i.user.id !== interaction.user.id) return interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                        .setTitle('This is not for you')
-                        .setColor('0xa477fc')
-                    ],
-                    ephemeral: true
-                })
+                            embeds: [
+                                new EmbedBuilder()
+                                .setTitle('This is not for you')
+                                .setColor('0xa477fc')
+                            ],
+                            ephemeral: true
+                        })
                         if (i.customId === 'backPage') {
                             if (currentPage !== 0) {
                                 --currentPage
@@ -207,7 +207,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -231,7 +233,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -255,7 +259,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -279,7 +285,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -322,13 +330,13 @@ module.exports = {
 
                     pageButtonCollector.on('collect', async (i) => {
                         if (i.user.id !== interaction.user.id) return interaction.reply({
-                    embeds: [
-                        new EmbedBuilder()
-                        .setTitle('This is not for you')
-                        .setColor('0xa477fc')
-                    ],
-                    ephemeral: true
-                })
+                            embeds: [
+                                new EmbedBuilder()
+                                .setTitle('This is not for you')
+                                .setColor('0xa477fc')
+                            ],
+                            ephemeral: true
+                        })
                         if (i.customId === 'backPage') {
                             if (currentPage !== 0) {
                                 --currentPage
@@ -344,7 +352,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -368,7 +378,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -392,7 +404,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()
@@ -416,7 +430,9 @@ module.exports = {
                                     pageButtons.components[1].setDisabled(false)
                                 }
                                 firstEmbed.edit({
-                                    embeds: [blacklistEmbeds[currentPage].setFooter({text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`})],
+                                    embeds: [blacklistEmbeds[currentPage].setFooter({
+                                        text: `Page ${currentPage + 1}/${blacklistEmbeds.length}`
+                                    })],
                                     components: [pageButtons]
                                 })
                                 i.deferUpdate()

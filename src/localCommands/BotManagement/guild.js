@@ -53,7 +53,7 @@ module.exports = {
 
         if (focusedOption.name === 'guild-name') {
             const focusedValue = interaction.options.getFocused()
-            let choices = await client.shard.broadcastEval(c => c.guilds.cache.map(g => g.id))
+            let choices = await client.shard.broadcastEval(c => c.guilds.cache.map(g => g.name + ',' + g.id))
             choices = choices[0]
             const filtered = choices.filter((choice) =>
                 choice.includes(focusedValue)

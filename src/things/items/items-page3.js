@@ -10,6 +10,7 @@ module.exports = [
         type: 'Collectable',
         rarity: 'Uncommon',
         url: 'https://imgur.com/IifsgUx.png',
-        usable: true
+        usable: true,
+        marketable: true
     },
 ]

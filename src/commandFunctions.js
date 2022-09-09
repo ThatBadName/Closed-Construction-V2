@@ -11,6 +11,8 @@ const premiumGuilds = require('./models/premiumGuilds')
 const voucher_codes = require('voucher-code-generator')
 const premiumCodeSchema = require('./models/premiumCodes')
 const activeDevCoinSchema = require('./models/activeDevCoins')
+const Discord = require('discord.js')
+const cooldowns = new Discord.Collection()
 const {
     EmbedBuilder,
     WebhookClient
@@ -40,7 +42,9 @@ async function blacklistCheck(idUser, idGuild, interaction) {
         }, {
             name: 'Reason',
             value: `${blacklistCheckUser.reason}`
-        }).setFooter({text: `Case ID: ${blacklistCheckUser.id}`})]
+        }).setFooter({
+            text: `Case ID: ${blacklistCheckUser.id}`
+        })]
     }).then(e => {
         return true
     })
@@ -61,7 +65,9 @@ async function blacklistCheck(idUser, idGuild, interaction) {
         }, {
             name: 'Reason',
             value: `${blacklistCheckGuild.reason}`
-        }).setFooter({text: `Case ID: ${blacklistCheckGuild.id}`})]
+        }).setFooter({
+            text: `Case ID: ${blacklistCheckGuild.id}`
+        })]
     }).then(e => {
         return true
     })
@@ -93,49 +99,41 @@ async function checkMaintinance(interaction) {
 
 
 async function cooldownCheck(userID, command, timeout, interaction) {
-    const userProfileDev = await profileSchema.findOne({
+        const userProfileDev = await profileSchema.findOne({
         userId: interaction.user.id,
         devMode: true
     })
     if (userProfileDev) return
-    const checkForCooldowns = await commandCooldowns.findOne({
-        userId: userID,
-        command: command
-    })
-    if (checkForCooldowns) {
-        interaction.reply({
-            embeds: [
-                new EmbedBuilder()
-                .setTitle('Slow it down!')
-                .setURL('https://www.youtube.com/watch?v=fkkNfCkupxM')
-                .setDescription(`You can use this command again <t:${Math.round(checkForCooldowns.expires.getTime() / 1000)}:R>`)
-                .setColor('0xff0000')
-            ],
-            ephemeral: true
+    if (interaction.commandName === 'claim' || interaction.commandName === 'report') {
+        const checkForCooldowns = await commandCooldowns.findOne({
+            userId: userID,
+            command: command
         })
-        return true
-    }
-    const result = await activeDevCoinSchema.findOne({userId: userID})
-    const date = new Date()
-    if (interaction.commandName === 'claim') {
-        if (interaction.options.getSubcommand() === 'daily') {
-            let dailyDate = new Date()
-            dailyDate = dailyDate.setHours(24,0,0,0)
-            commandCooldowns.create({
-                userId: userID,
-                command: command,
-                expires: dailyDate
+        if (checkForCooldowns) {
+            interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                    .setTitle('Slow it down buddy')
+                    .setDescription(`You can use this command again <t:${Math.round(checkForCooldowns.expires.getTime() / 1000)}:R>`)
+                    .setColor('0xa477fc')
+                ],
+                ephemeral: true
             })
+            return true
         }
-        else if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
-            date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
-            commandCooldowns.create({
-                userId: userID,
-                command: command,
-                expires: date
-            })
-        }
-        else {
+        const date = new Date()
+        if (interaction.commandName === 'claim') {
+            if (interaction.options.getSubcommand() === 'daily') {
+                var dateDaily = new Date()
+                dateDaily.setHours(24, 0, 0)
+                var nowUTC = Date.UTC(dateDaily.getUTCFullYear(), dateDaily.getUTCMonth(), dateDaily.getUTCDate(), dateDaily.getUTCHours() - 4, dateDaily.getUTCMinutes(), dateDaily.getUTCSeconds())
+                commandCooldowns.create({
+                    userId: userID,
+                    command: command,
+                    expires: nowUTC
+                })
+            }
+        } else {
             date.setSeconds(date.getSeconds() + timeout)
             commandCooldowns.create({
                 userId: userID,
@@ -144,23 +142,120 @@ async function cooldownCheck(userID, command, timeout, interaction) {
             })
         }
     } else {
-        if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
-            date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
-            commandCooldowns.create({
-                userId: userID,
-                command: command,
-                expires: date
-            })
+        const result = await activeDevCoinSchema.findOne({
+            userId: userID
+        })
+        if (result) timeout = timeout / 2
+        if (!cooldowns.has(command)) {
+            cooldowns.set(command, new Discord.Collection())
         }
-        else {
-            date.setSeconds(date.getSeconds() + timeout)
-            commandCooldowns.create({
-                userId: userID,
-                command: command,
-                expires: date
-            })
+
+        const current_time = Date.now()
+        const time_stamps = cooldowns.get(command)
+        const cooldown_amount = (timeout) * 1000
+
+        if (time_stamps.has(userID)) {
+            const expiration_time = time_stamps.get(userID) + cooldown_amount
+
+            if (current_time < expiration_time) {
+                const time_left = (expiration_time - current_time) / 1000
+
+                seconds = Number(time_left)
+                var d = Math.floor(time_left / (3600 * 24))
+                var h = Math.floor(time_left % (3600 * 24) / 3600)
+                var m = Math.floor(time_left % 3600 / 60)
+                var s = Math.floor(time_left % 60)
+
+                var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : ""
+                var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : ""
+                var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : ""
+                var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : ""
+
+                interaction.reply({
+                    embeds: [
+                        new EmbedBuilder()
+                        .setTitle('Slow it down buddy')
+                        .setColor('0xa477fc')
+                        .setDescription(`You must wait ${dDisplay + hDisplay + mDisplay + sDisplay} before using this again`)
+                    ],
+                    ephemeral: true
+                })
+                return true
+            }
         }
+
+        time_stamps.set(userID, current_time)
+        setTimeout(() => time_stamps.delete(userID), cooldown_amount)
     }
+
+    // const userProfileDev = await profileSchema.findOne({
+    //     userId: interaction.user.id,
+    //     devMode: true
+    // })
+    // if (userProfileDev) return
+    // const checkForCooldowns = await commandCooldowns.findOne({
+    //     userId: userID,
+    //     command: command
+    // })
+    // if (checkForCooldowns) {
+    //     interaction.reply({
+    //         embeds: [
+    //             new EmbedBuilder()
+    //             .setTitle('Slow it down!')
+    //             .setURL('https://www.youtube.com/watch?v=fkkNfCkupxM')
+    //             .setDescription(`You can use this command again <t:${Math.round(checkForCooldowns.expires.getTime() / 1000)}:R>`)
+    //             .setColor('0xff0000')
+    //         ],
+    //         ephemeral: true
+    //     })
+    //     return true
+    // }
+    // const result = await activeDevCoinSchema.findOne({userId: userID})
+    // const date = new Date()
+    // if (interaction.commandName === 'claim') {
+    //     if (interaction.options.getSubcommand() === 'daily') {
+    //         let dailyDate = new Date()
+    //         dailyDate = dailyDate.setHours(24,0,0,0)
+    //         commandCooldowns.create({
+    //             userId: userID,
+    //             command: command,
+    //             expires: dailyDate
+    //         })
+    //     }
+    //     else if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
+    //         date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
+    //         commandCooldowns.create({
+    //             userId: userID,
+    //             command: command,
+    //             expires: date
+    //         })
+    //     }
+    //     else {
+    //         date.setSeconds(date.getSeconds() + timeout)
+    //         commandCooldowns.create({
+    //             userId: userID,
+    //             command: command,
+    //             expires: date
+    //         })
+    //     }
+    // } else {
+    //     if (result && interaction.commandName !== 'claim' && interaction.commandName !== 'trade' && interaction.commandName !== 'report') {
+    //         date.setSeconds(date.getSeconds() + Math.round(timeout / 2))
+    //         commandCooldowns.create({
+    //             userId: userID,
+    //             command: command,
+    //             expires: date
+    //         })
+    //     }
+    //     else {
+    //         date.setSeconds(date.getSeconds() + timeout)
+    //         commandCooldowns.create({
+    //             userId: userID,
+    //             command: command,
+    //             expires: date
+    //         })
+    //     }
+    // }
 }
 
 async function cooldownRobCheck(userID, userRobbedId, timeout, interaction) {
@@ -207,8 +302,12 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
     expires.setHours(expires.getHours() + 24)
     const expiresStaff = new Date()
     expiresStaff.setMonth(expiresStaff.getMonth() + 1)
-    const webhookSus = new WebhookClient({url: "https://discord.com/api/webhooks/996501433648169081/jqOyQ0awRJMWrZHyxyLGE_sFan7Pe5V2WhOlr7KadqYY-HQULOMmiScZUugnyvYb5uwh"})
-    const webhookStaff = new WebhookClient({url: "https://discord.com/api/webhooks/996503382221131836/koerD962bqjB-sMDH7j_7ZZf_tkQlnAyJ_Hb9u5kIV3OQixsUW02I9sJh3q5XHQvI2CG"})
+    const webhookSus = new WebhookClient({
+        url: "https://discord.com/api/webhooks/996501433648169081/jqOyQ0awRJMWrZHyxyLGE_sFan7Pe5V2WhOlr7KadqYY-HQULOMmiScZUugnyvYb5uwh"
+    })
+    const webhookStaff = new WebhookClient({
+        url: "https://discord.com/api/webhooks/996503382221131836/koerD962bqjB-sMDH7j_7ZZf_tkQlnAyJ_Hb9u5kIV3OQixsUW02I9sJh3q5XHQvI2CG"
+    })
     if (!sus && !staff) {
         recentCommandSchema.create({
             userId: userId,
@@ -219,8 +318,7 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
             guildName: interaction.guild.name,
             guildId: interaction.guild.id
         }).catch(() => {})
-    }
-    else if (sus === true && !staff) {
+    } else if (sus === true && !staff) {
         recentCommandSchema.create({
             userId: userId,
             command: command,
@@ -253,11 +351,12 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
-                .setFooter({text: `Closed Construction`})
+                .setFooter({
+                    text: `Closed Construction`
+                })
             ]
         })
-    }
-    else if (staff === true && sus === false) {
+    } else if (staff === true && sus === false) {
         recentCommandSchema.create({
             userId: userId,
             command: command,
@@ -290,11 +389,12 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
-                .setFooter({text: `Closed Construction`})
+                .setFooter({
+                    text: `Closed Construction`
+                })
             ]
         })
-    }
-    else if (sus === true && staff === true) {
+    } else if (sus === true && staff === true) {
         recentCommandSchema.create({
             userId: userId,
             command: command,
@@ -328,7 +428,9 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
-                .setFooter({text: `Closed Construction`})
+                .setFooter({
+                    text: `Closed Construction`
+                })
             ]
         })
         webhookStaff.send({
@@ -353,7 +455,9 @@ async function createRecentCommand(userId, command, commandInfo, interaction, su
                     name: 'Alert ID',
                     value: `\`A-${passString}\``
                 })
-                .setFooter({text: `Closed Construction`})
+                .setFooter({
+                    text: `Closed Construction`
+                })
             ]
         })
     }
@@ -569,7 +673,7 @@ async function genCodePages(codes) {
             .setColor('0xa744f2')
             .setTitle(`Your codes`)
             .setDescription(info)
-            codeEmbeds.push(embed)
+        codeEmbeds.push(embed)
     }
     return codeEmbeds
 }
@@ -587,7 +691,7 @@ async function genCodePagesStaff(codes) {
             .setColor('0xa744f2')
             .setTitle(`Code List`)
             .setDescription(info)
-            codeEmbeds.push(embed)
+        codeEmbeds.push(embed)
     }
     return codeEmbeds
 }

@@ -152,51 +152,52 @@ module.exports = {
                 result.coinMulti += Math.round(Math.random() * (5 - 1) + 1)
                 result.save()
 
+                let userNotDmAble = false
                 if (result.dmNotifs === true) {
-                    try {
                         interaction.user.send({
                             embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
+                        }).catch(() => {
+                            userNotDmAble = true
                         })
-                    } catch (err) {
-                        interaction.channel.send({
-                            content: `${interaction.user},`,
-                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
-                        })
-                    }
                 } else {
                     interaction.channel.send({
                         content: `${interaction.user},`,
                         embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
                     })
                 }
+                if (userNotDmAble === true) interaction.channel.send({
+                    content: `${interaction.user},`,
+                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
+                })
                 functions.createNewNotif(interaction.user.id, `You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)
             } else {
                 if (randPlanet === 0) {
                     if (result.planetXp + Math.round(Math.random() * (5 - 1) + 1) >= result.requiredPlanetXp) {
+                        if (result.unlockedPlanetLevel > result.planetLevel) return
                         result.planetXp = 0
-                        result.planetLevel = result.level + 1
+                        result.planetLevel = result.planetLevel + 1
                         result.requiredPlanetXp = result.requiredPlanetXp + 1000
-                        result.unlockedPlanetLevel += 1
+                        result.unlockedPlanetLevel += 0
                         result.save()
 
+                        let userNotDmAble = false
                         if (result.dmNotifs === true) {
-                            try {
-                                interaction.user.send({
-                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
+                                await interaction.user.send({
+                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
+                                }).catch(() => {
+                                    userNotDmAble = true
                                 })
-                            } catch (err) {
-                                interaction.channel.send({
-                                    content: `${interaction.user},`,
-                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
-                                })
-                            }
                         } else {
-                            interaction.channel.send({
+                            await interaction.channel.send({
                                 content: `${interaction.user},`,
-                                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
+                                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
                             })
                         }
-                        functions.createNewNotif(interaction.user.id, `You are now **planet level ${result.level}**`)
+                        if (userNotDmAble === true) await interaction.channel.send({
+                            content: `${interaction.user},`,
+                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
+                        })
+                        functions.createNewNotif(interaction.user.id, `You are now **planet level ${result.planetLevel}**`)
                     } else {
                         if (result.unlockedPlanetLevel > result.planetLevel) return
                         result.planetXp += Math.round(Math.random() * (5 - 1) + 1)
@@ -362,51 +363,53 @@ module.exports = {
                 result.coinMulti += Math.round(Math.random() * (5 - 1) + 1)
                 result.save()
 
+                let userNotDmAble = false
+
                 if (result.dmNotifs === true) {
-                    try {
                         interaction.user.send({
                             embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
+                        }).catch(() => {
+                            userNotDmAble = true
                         })
-                    } catch (err) {
-                        interaction.channel.send({
-                            content: `${interaction.user},`,
-                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
-                        })
-                    }
                 } else {
-                    interaction.channel.send({
+                    await interaction.channel.send({
                         content: `${interaction.user},`,
                         embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
                     })
                 }
+                if (userNotDmAble === true) await interaction.channel.send({
+                    content: `${interaction.user},`,
+                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)]
+                })
                 functions.createNewNotif(interaction.user.id, `You are now **level ${result.level}**. As a reward you have been given \`${reward}\` coins`)
             } else {
                 if (randPlanet === 0) {
                     if (result.planetXp + Math.round(Math.random() * (5 - 1) + 1) >= result.requiredPlanetXp) {
+                        if (result.unlockedPlanetLevel > result.planetLevel) return
                         result.planetXp = 0
-                        result.planetLevel = result.level + 1
+                        result.planetLevel = result.planetLevel + 1
                         result.requiredPlanetXp = result.requiredPlanetXp + 1000
-                        result.unlockedPlanetLevel += 1
+                        result.unlockedPlanetLevel += 0 //TODO change to 1 when planets are active. There is 1 for / commands above aswell
                         result.save()
 
+                        let userNotDmAble = false
                         if (result.dmNotifs === true) {
-                            try {
-                                interaction.user.send({
-                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
+                                await interaction.user.send({
+                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
+                                }).catch(() => {
+                                    userNotDmAble = true
                                 })
-                            } catch (err) {
-                                interaction.channel.send({
-                                    content: `${interaction.user},`,
-                                    embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
-                                })
-                            }
                         } else {
-                            interaction.channel.send({
+                            await interaction.channel.send({
                                 content: `${interaction.user},`,
-                                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.level}**`)]
+                                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
                             })
                         }
-                        functions.createNewNotif(interaction.user.id, `You are now **planet level ${result.level}**`)
+                        if (userNotDmAble === true) await interaction.channel.send({
+                            content: `${interaction.user},`,
+                            embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('Congrats, You leveled up!').setDescription(`You are now **planet level ${result.planetLevel}**`)]
+                        })
+                        functions.createNewNotif(interaction.user.id, `You are now **planet level ${result.planetLevel}**`)
                     } else {
                         if (result.unlockedPlanetLevel > result.planetLevel) return
                         result.planetXp += Math.round(Math.random() * (5 - 1) + 1)

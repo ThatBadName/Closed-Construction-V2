@@ -52,10 +52,18 @@ module.exports = {
     async execute(
         interaction
     ) {
+        const wait = await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                .setTitle('Please wait')
+                .setColor('0xa477fc')
+            ],
+            fetchReply: true
+        })
         const checkForDev = await profileSchema.findOne({userId: interaction.user.id, developer: true})
         const checkForAdmin = await profileSchema.findOne({userId: interaction.user.id, botAdmin: true})
         const checkForModerator = await profileSchema.findOne({userId: interaction.user.id, botModerator: true})
-        if (!checkForDev && !checkForAdmin && !checkForModerator) return interaction.reply({
+        if (!checkForDev && !checkForAdmin && !checkForModerator) return wait.edit({
             embeds: [
                 new EmbedBuilder()
                 .setTitle('You do not have perms to do this')
@@ -68,25 +76,25 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder()
                 .setCustomId('firstPage')
-                .setEmoji('⏪')
+                .setEmoji('<:FirstPage:1011987981713817620>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('backPage')
-                .setEmoji('◀️')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('nextPage')
-                .setEmoji('▶️')
-                .setStyle('Secondary'),
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('lastPage')
-                .setEmoji('⏩')
-                .setStyle('Secondary'),
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
             )
 
             let commands
@@ -96,17 +104,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (searchResults.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPagesById(searchResults)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
+            const firstEmbed = await wait.edit({
                 embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No alerts with that ID')],
                     fetchReply: true
                 })
@@ -118,7 +131,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -292,17 +305,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('This user has not used any commands in the past 24 hours')],
                     fetchReply: true
                 })
@@ -314,7 +332,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -490,17 +508,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('There has been no usage of this command in the past 24 hours')],
                     fetchReply: true
                 })
@@ -512,7 +535,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -695,17 +718,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('I could not find any results for these search queries')],
                     fetchReply: true
                 })
@@ -717,7 +745,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -891,17 +919,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('I could not find any results for these search queries')],
                     fetchReply: true
                 })
@@ -913,7 +946,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -1096,17 +1129,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('I could not find any results for these search queries')],
                     fetchReply: true
                 })
@@ -1118,7 +1156,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -1310,17 +1348,22 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
+
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('I could not find any results for these search queries')],
                     fetchReply: true
                 })
@@ -1332,7 +1375,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -1515,17 +1558,21 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('I could not find any results for these search queries')],
                     fetchReply: true
                 })
@@ -1537,7 +1584,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')
@@ -1703,17 +1750,21 @@ module.exports = {
             }).sort({
                 _id: -1
             })
+            if (commands.length === 0) return wait.edit({
+                embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
+                fetchReply: true
+            })
             const commandEmbeds = await functions.createCommandPages(commands)
             if (commandEmbeds.length === 1) {
                 pageButtons.components[2].setDisabled(true)
                 pageButtons.components[3].setDisabled(true)
             }
-            const firstEmbed = await interaction.reply({
-                embeds: [commandEmbeds[0]],
+            const firstEmbed = await wait.edit({
+                embeds: [commandEmbeds[0].setFooter({text: `Page ${currentPage + 1}/${commandEmbeds.length}`})],
                 components: [pageButtons],
                 fetchReply: true
             }).catch(() => {
-                return interaction.reply({
+                return wait.edit({
                     embeds: [new EmbedBuilder().setColor('0xa744f2').setTitle('No commands have been run in the past 24 hours')],
                     fetchReply: true
                 })
@@ -1725,7 +1776,7 @@ module.exports = {
             })
 
             pageButtonCollector.on('collect', async (i) => {
-                if (i.user.id !== interaction.user.id) return interaction.reply({
+                if (i.user.id !== interaction.user.id) return wait.edit({
                     embeds: [
                         new EmbedBuilder()
                         .setTitle('This is not for you')

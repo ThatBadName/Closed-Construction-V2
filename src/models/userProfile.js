@@ -113,8 +113,13 @@ const schema = new Schema({
    },
    voteReminders: {
       type: Boolean,
-      deafult: true
-   }
+      default: true
+   },
+   hasBeenFired: {
+      type: Boolean,
+      default: false
+   },
+   getsFiresOn: Date
 
 }, {
    timestamps: true

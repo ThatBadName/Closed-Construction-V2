@@ -35,25 +35,25 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder()
                 .setCustomId('firstPage')
-                .setEmoji('⏪')
+                .setEmoji('<:FirstPage:1011987981713817620>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('backPage')
-                .setEmoji('◀️')
+                .setEmoji('<:PreviousPage:1011987986033938462>')
                 .setDisabled(true)
-                .setStyle('Secondary'),
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('nextPage')
-                .setEmoji('▶️')
-                .setStyle('Secondary'),
+                .setEmoji('<:NextPage:1011987984385593415>')
+                .setStyle('Primary'),
 
                 new ButtonBuilder()
                 .setCustomId('lastPage')
-                .setEmoji('⏩')
-                .setStyle('Secondary'),
+                .setEmoji('<:LastPage:1011987983060193290>')
+                .setStyle('Primary'),
             )
 
         const wait = await interaction.reply({

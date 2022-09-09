@@ -29,14 +29,19 @@ async function forageOnEarth(interaction) {
                 new ButtonBuilder()
                 .setLabel('Forage Again')
                 .setCustomId('forage-again')
+                .setStyle('Secondary'),
+
+                new ButtonBuilder()
+                .setLabel('Buy Axe')
+                .setCustomId('buy-axe')
                 .setStyle('Secondary')
             )
         ]
     })
 
-    const randomCoins = Math.round(Math.random() * (250 - 5) + 5)
+    const randomCoins = Math.round(Math.random() * (5000 - 5) + 5)
     const willGetRandomItem = Math.round(Math.random() * 5)
-    const willToolBreak = Math.round(Math.random() * 10)
+    const willToolBreak = Math.round(Math.random() * 100)
     const reasonsToBreak = [
         `A wolf came and stole your axe`,
         `You ate some berries that made you feel sick. You went home leaving your axe in the woods`,
@@ -78,7 +83,7 @@ async function forageOnEarth(interaction) {
         interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                .setTitle(`${interaction.user.tag} Uhhh something happened`)
+                .setTitle(`${interaction.user.tag} found something`)
                 .setColor('0xa744fc')
                 .setDescription(`You found a ${itemToGet.split(',')[1]}${itemToGet.split(',')[2]} while mining.`)
             ],
@@ -114,8 +119,7 @@ async function forageOnEarth(interaction) {
             ]
         })
     } else {
-        const multi = Math.round(randomCoins / 100 * userProfile.coinMulti)
-        const amount = randomCoins + multi
+        let amount = Math.round((randomCoins / 100 * userProfile.coinMulti) + randomCoins)
         userProfile.wallet += amount
         userProfile.save()
 
