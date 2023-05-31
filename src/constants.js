@@ -1,15 +1,15 @@
 const functionsMain = require('./botFunctions/main')
 
-const cannotBan = ['804265795835265034']
+const cannotBan = [] //list of str yser ids
 const economyCommands = ['profile', 'craft', 'inventory', 'use', 'item', 'city', 'scavange', 'settings']
 const xpCommands = ['craft', 'use', 'scavange']
 const economyButtons = ['']
 const wildEconomyButtons = ['build', 'activity', 'cityMenu', 'refresh']
 const cooldownImmunity = ['']
-const userReportWebhook = 'https://discord.com/api/webhooks/1034380880807989349/jXGicCrLap9uYMRJZfDiNYre5LbC1Vq3ZTIz3oxxJWfi3nLoSdHz91NlkFwyWpZgU8OV'
-const dmWebhook = 'https://discord.com/api/webhooks/1034530809601851462/ak_WAislHhv27HAHNEbjYrwaO9ciXaxY5Qz-M9tPbWNbKgxnXrNOlxnK16dYE31tfEH8'
-const blacklistWebhook = 'https://discord.com/api/webhooks/1052950409519566949/nDF21MYb7nGNbWhUJa8lYDiQ4Vzd0W18Nu3Tuwrxx4CkBIVrw3hBe0sLe6SGuWdim4ld'
-const supportServerUrl = 'https://discord.gg/c4MZpDPvKW'
+const userReportWebhook = ''
+const dmWebhook = ''
+const blacklistWebhook = ''
+const supportServerUrl = 'https://discord.gg/'
 
 const botStaffPerms = {
   1: "Developer",
