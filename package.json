@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "npm i & node src/bot.js",
+    "build": "npm run delete & npm i & node src/bot.js",
+    "start": "node src/index.js",
     "delete": "node deleteDeleteMeFiles.js"
   },
   "dependencies": {
