@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "npm i & node src/bot.js",
+    "delete": "node deleteDeleteMeFiles.js"
+  },
   "dependencies": {
     "cli-color": "^2.0.3",
     "discord.js": "^14.7.0",
