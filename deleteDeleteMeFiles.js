@@ -16,11 +16,12 @@ let deleteMeFiles = [
   `./database/users/DELETE_ME`
 ]
 
-for (const file of deleteMeFiles()) {
+for (const file of deleteMeFiles) {
   if (fs.existsSync(file)) {
     console.log(`Removing file: ${file}`)
-    fs.rmSync(file, {recursive:true})
+    fs.rmSync(file, {
+      recursive: true
+    })
   }
 }
-
 console.log(`DELETE_ME files have now been deleted, you can run the bot using "node src/bot.js"`)
