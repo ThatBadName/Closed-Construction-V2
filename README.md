@@ -1,7 +1,7 @@
 # Closed-Construction-OpenSource
 This is the most recent version that Closed Construction got to before I stopped maintaining it. If you need any support with self hosting the bot please join my support server.\
 <p align="center">
-  <img href="https://discordapp.com/api/guilds/994642021425877112/widget.png?style=banner4">
+  <iframe src="https://discord.com/widget?id=994642021425877112&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
 <p>
 ## Self Hosting
 - Clone the repo
